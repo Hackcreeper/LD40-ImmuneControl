@@ -28,6 +28,7 @@ namespace LD40
 
             if (targetPosition == null)
             {
+                Health.Instance.Sub(1);
                 Destroy(gameObject);
             }
         }
