@@ -109,5 +109,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Example
   Image: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
+  Price: 4
   Killed: 103
   Value: 54

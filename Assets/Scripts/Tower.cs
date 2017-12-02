@@ -7,6 +7,7 @@ namespace LD40
     {
         public string Name;
         public Sprite Image;
+        public int Price;
         
         [HideInInspector]
         public int Killed;
@@ -41,6 +42,8 @@ namespace LD40
             var canPlace = Physics.OverlapSphere(hit.point, .55f, TowerPlacement.Instance.TowerMask).Length == 0;
             transform.position = hit.point;
 
+            canPlace = canPlace && Cells.Instance.Check(Price);
+            
             SetColor(canPlace ? Color.green : Color.red, 0.5f, true, false);
 
             if (canPlace && Input.GetMouseButtonDown(0))
@@ -58,6 +61,8 @@ namespace LD40
 
         private void Place()
         {
+            if (!Cells.Instance.Sub(Price)) return;
+            
             placing = false;
             gameObject.layer = LayerMask.NameToLayer("Tower");
             SetColor(originalColor, 1f, false, true);
