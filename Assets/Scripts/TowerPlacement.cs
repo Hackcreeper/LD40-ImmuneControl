@@ -5,9 +5,8 @@ namespace LD40
     public class TowerPlacement : MonoBehaviour
     {
         public GameObject CirclePrefab;
-
+        
         public LayerMask PlaceMask;
-
         public LayerMask TowerMask;
 
         public static TowerPlacement Instance { get; private set; }
@@ -21,21 +20,18 @@ namespace LD40
 
         private void Update()
         {
-            if (placingTower)
+            if (!placingTower) return;
+            
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1))
             {
-                if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1))
-                {
-                    Destroy(placingTower.gameObject);
-                }
+                Destroy(placingTower.gameObject);
             }
         }
 
+        // ReSharper disable once UnusedMember.Global
         public void SpawnTower(GameObject prefab)
         {
-            if (placingTower)
-            {
-                return;
-            }
+            if (placingTower) return;
             
             placingTower = Instantiate(prefab).GetComponent<Tower>();
         }

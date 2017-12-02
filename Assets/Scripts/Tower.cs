@@ -5,13 +5,9 @@ namespace LD40
 {
     public class Tower : MonoBehaviour
     {
-        public bool Placing = true;
-
-        private bool CanPlace;
-
+        private bool placing = true;
         private Color originalColor;
-
-        private MeshRenderer Circle;
+        private MeshRenderer circle;
 
         private void Start()
         {
@@ -20,27 +16,18 @@ namespace LD40
         
         private void Place()
         {
-            if (!CanPlace) return;
-            
-            Placing = false;
+            placing = false;
             gameObject.layer = LayerMask.NameToLayer("Tower");
-
             SetColor(originalColor, 1f, false, true);
-            Destroy(Circle.gameObject);
-            
+            Destroy(circle.gameObject);
             TowerPlacement.Instance.Placed();
         }
 
         private void Update()
         {
-            if (!Placing) return;
+            if (!placing) return;
 
-            if (Circle == null)
-            {
-                Circle = Instantiate(TowerPlacement.Instance.CirclePrefab).GetComponent<MeshRenderer>();
-                Circle.transform.SetParent(transform);
-                Circle.transform.localPosition = new Vector3(0, .1f, 0);
-            }
+            createCircleIfNotExists();
             
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -51,24 +38,26 @@ namespace LD40
                 return;
             }
 
-            CanPlace = Physics.OverlapSphere(hit.point, .55f, TowerPlacement.Instance.TowerMask).Length == 0;
+            var canPlace = Physics.OverlapSphere(hit.point, .55f, TowerPlacement.Instance.TowerMask).Length == 0;
             transform.position = hit.point;
 
-            if (CanPlace)
-            {
-                SetColor(Color.green, 0.5f, true, false);
-            }
-            else
-            {
-                SetColor(Color.red, 0.5f, true, false);
-            }
+            SetColor(canPlace ? Color.green : Color.red, 0.5f, true, false);
 
-            if (Input.GetMouseButtonDown(0))
+            if (canPlace && Input.GetMouseButtonDown(0))
             {
                 Place();
             }
         }
-        
+
+        private void createCircleIfNotExists()
+        {
+            if (circle != null) return;
+            
+            circle = Instantiate(TowerPlacement.Instance.CirclePrefab).GetComponent<MeshRenderer>();
+            circle.transform.SetParent(transform);
+            circle.transform.localPosition = new Vector3(0, .1f, 0);
+        }
+
         private void SetColor(Color color, float alpha, bool colorizeCircle, bool shadows)
         {
             var meshRenderer = gameObject.GetComponent<MeshRenderer>();
@@ -90,7 +79,7 @@ namespace LD40
 
             if (colorizeCircle)
             {
-                Circle.material.color = new Color(
+                circle.material.color = new Color(
                     color.r, color.g, color.b, 0.15f
                 );                
             }

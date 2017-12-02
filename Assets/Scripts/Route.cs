@@ -6,16 +6,11 @@ namespace LD40
     {
         public Transform[] Nodes;
         
-        public static Route Instance
-        {
-            get { return pInstance; }
-        }
-
-        private static Route pInstance;
+        public static Route Instance { get; private set; }
 
         private void Awake()
         {
-            pInstance = this;
+            Instance = this;
         }
 
         public Vector3? GetPosition(int idx)

@@ -7,9 +7,7 @@ namespace LD40
         public float Speed = 5f;
 
         private int currentNode;
-
         private float progress;
-
         private Vector3? targetPosition;
 
         private void Start()
