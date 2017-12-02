@@ -27,6 +27,8 @@ namespace LD40
 
             SetColor(originalColor, 1f, false, true);
             Destroy(Circle.gameObject);
+            
+            TowerPlacement.Instance.Placed();
         }
 
         private void Update()

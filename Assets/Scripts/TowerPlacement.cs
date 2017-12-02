@@ -4,36 +4,45 @@ namespace LD40
 {
     public class TowerPlacement : MonoBehaviour
     {
-        public GameObject TowerPrefab;
-
         public GameObject CirclePrefab;
 
         public LayerMask PlaceMask;
 
         public LayerMask TowerMask;
 
-        public static TowerPlacement Instance
-        {
-            get { return pInstance; }
-        }
+        public static TowerPlacement Instance { get; private set; }
 
-        private static TowerPlacement pInstance;
-
-        private Tower Tower;
+        private Tower placingTower;
 
         private void Awake()
         {
-            pInstance = this;
-
-            Tower = Instantiate(TowerPrefab).GetComponent<Tower>();
+            Instance = this;
         }
 
         private void Update()
         {
-            if (!Tower.Placing)
+            if (placingTower)
             {
-                Tower = Instantiate(TowerPrefab).GetComponent<Tower>();
+                if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1))
+                {
+                    Destroy(placingTower.gameObject);
+                }
             }
+        }
+
+        public void SpawnTower(GameObject prefab)
+        {
+            if (placingTower)
+            {
+                return;
+            }
+            
+            placingTower = Instantiate(prefab).GetComponent<Tower>();
+        }
+
+        public void Placed()
+        {
+            placingTower = null;
         }
     }
 }
