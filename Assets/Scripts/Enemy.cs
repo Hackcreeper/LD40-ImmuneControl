@@ -26,11 +26,11 @@ namespace LD40
             currentNode++;
             targetPosition = Route.Instance.GetPosition(currentNode);
 
-            if (targetPosition == null)
-            {
-                Health.Instance.Sub(1);
-                Destroy(gameObject);
-            }
+            if (targetPosition != null) return;
+            
+            Health.Instance.Sub(1);
+            EnemySpawner.Instance.KilledEnemy();
+            Destroy(gameObject);
         }
     }
 }
