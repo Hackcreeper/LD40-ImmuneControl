@@ -25,7 +25,7 @@ namespace LD40
             Placing = false;
             gameObject.layer = LayerMask.NameToLayer("Tower");
 
-            SetOriginal();
+            SetColor(originalColor, 1f, false, true);
             Destroy(Circle.gameObject);
         }
 
@@ -54,11 +54,11 @@ namespace LD40
 
             if (CanPlace)
             {
-                setGreen();
+                SetColor(Color.green, 0.5f, true, false);
             }
             else
             {
-                SetRed();
+                SetColor(Color.red, 0.5f, true, false);
             }
 
             if (Input.GetMouseButtonDown(0))
@@ -67,47 +67,31 @@ namespace LD40
             }
         }
         
-        private void SetOriginal()
-        {
-            var meshRenderer = gameObject.GetComponent<MeshRenderer>();
-            
-            meshRenderer.receiveShadows = true;
-            meshRenderer.shadowCastingMode = ShadowCastingMode.On;
-            
-            meshRenderer.material.color = originalColor;
-        }
-        
-        private void SetRed()
+        private void SetColor(Color color, float alpha, bool colorizeCircle, bool shadows)
         {
             var meshRenderer = gameObject.GetComponent<MeshRenderer>();
 
-            meshRenderer.receiveShadows = false;
-            meshRenderer.shadowCastingMode = ShadowCastingMode.Off;
+            if (shadows)
+            {
+                meshRenderer.receiveShadows = true;
+                meshRenderer.shadowCastingMode = ShadowCastingMode.On;
+            }
+            else
+            {
+                meshRenderer.receiveShadows = false;
+                meshRenderer.shadowCastingMode = ShadowCastingMode.Off;   
+            }
             
             meshRenderer.material.color = new Color(
-                1f, 0f, 0f, 0.5f
+                color.r, color.g, color.b, alpha
             );
-            
-            Circle.material.color = new Color(
-                1f, 0f, 0f, 0.15f
-            );
-        }
-        
-        private void setGreen()
-        {
-            var meshRenderer = gameObject.GetComponent<MeshRenderer>();
-            
-            meshRenderer.receiveShadows = false;
-            meshRenderer.shadowCastingMode = ShadowCastingMode.Off;
-            
-            meshRenderer.material.color = new Color(
-                0f, 1f, 0f, 0.5f
-            );
-            
-            Circle.material.color = new Color(
-                0f, 1f, 0f, 0.15f
-            );
-        }
 
+            if (colorizeCircle)
+            {
+                Circle.material.color = new Color(
+                    color.r, color.g, color.b, 0.15f
+                );                
+            }
+        }
     }
 }
