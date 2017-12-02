@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace LD40
@@ -34,6 +35,11 @@ namespace LD40
         public void Sub(int value)
         {
             Amount -= value;
+
+            if (Amount <= 0)
+            {
+                SceneManager.LoadScene("GameOver");
+            }
         }
     }
 }
