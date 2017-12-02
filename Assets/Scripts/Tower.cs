@@ -5,6 +5,15 @@ namespace LD40
 {
     public class Tower : MonoBehaviour
     {
+        public string Name;
+        public Sprite Image;
+        
+        [HideInInspector]
+        public int Killed;
+        
+        [HideInInspector]
+        public int Value;
+        
         private bool placing = true;
         private Color originalColor;
         private MeshRenderer circle;
@@ -14,20 +23,11 @@ namespace LD40
             originalColor = GetComponent<MeshRenderer>().material.color;
         }
         
-        private void Place()
-        {
-            placing = false;
-            gameObject.layer = LayerMask.NameToLayer("Tower");
-            SetColor(originalColor, 1f, false, true);
-            Destroy(circle.gameObject);
-            TowerPlacement.Instance.Placed();
-        }
-
         private void Update()
         {
             if (!placing) return;
 
-            createCircleIfNotExists();
+            CreateCircleIfNotExists();
             
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -49,7 +49,23 @@ namespace LD40
             }
         }
 
-        private void createCircleIfNotExists()
+        private void OnMouseDown()
+        {
+            if (placing) return;
+
+            DetailPanel.Instance.Open(this);
+        }
+
+        private void Place()
+        {
+            placing = false;
+            gameObject.layer = LayerMask.NameToLayer("Tower");
+            SetColor(originalColor, 1f, false, true);
+            Destroy(circle.gameObject);
+            TowerPlacement.Instance.Placed();
+        }
+        
+        private void CreateCircleIfNotExists()
         {
             if (circle != null) return;
             
