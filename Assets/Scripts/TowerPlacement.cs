@@ -32,6 +32,11 @@ namespace LD40
         public void SpawnTower(GameObject prefab)
         {
             if (placingTower) return;
+
+            if (DetailPanel.Instance.IsOpen())
+            {
+                DetailPanel.Instance.Close();
+            }
             
             placingTower = Instantiate(prefab).GetComponent<Tower>();
         }
