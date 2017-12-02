@@ -5,6 +5,7 @@ namespace LD40
     public class Enemy : MonoBehaviour
     {
         public float Speed = 5f;
+        public int DamageMultiplier = 1;
 
         private int currentNode;
         private float progress;
@@ -26,11 +27,11 @@ namespace LD40
             currentNode++;
             targetPosition = Route.Instance.GetPosition(currentNode);
 
-            if (targetPosition == null)
-            {
-                Health.Instance.Sub(1);
-                Destroy(gameObject);
-            }
+            if (targetPosition != null) return;
+            
+            Health.Instance.Sub(1 * DamageMultiplier);
+            EnemySpawner.Instance.KilledEnemy();
+            Destroy(gameObject);
         }
     }
 }

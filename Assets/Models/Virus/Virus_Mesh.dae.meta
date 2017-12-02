@@ -18,7 +18,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: None
-    second: {fileID: 2100000, guid: fba275dc1539f514c98ea8a6663ece22, type: 2}
+    second: {fileID: 2100000, guid: 84c88105bdddd514fab75a97adf7ba27, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -48,7 +48,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0.2
     meshCompression: 0
     addColliders: 0
     importVisibility: 1

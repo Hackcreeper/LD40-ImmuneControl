@@ -1,23 +1,154 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace LD40
 {
     public class EnemySpawner : MonoBehaviour
     {
-        public GameObject EnemyPrefab;
+        public static EnemySpawner Instance { get; private set; }
+
+        public GameObject GreenVirusPrefab;
+        public GameObject BlueVirusPrefab;
+        public GameObject PurpleVirusPrefab;
+
         public Transform SpawnPoint;
+        public Button waveButton;
+        public Text waveText;
+
+        private const int EnemyGreenVirus = 1;
+        private const int EnemyBlueVirus = 2;
+        private const int EnemyPurpleVirus = 3;
 
         private float timer;
+        private readonly List<int[]> waves = new List<int[]>();
+
+        private int wave = -1;
+        private int enemiesLeft;
+        private int spawnedEnemy;
+
+        private void Start()
+        {
+            Instance = this;
+
+            // WAVE 1
+            waves.Add(new[]
+            {
+                EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus,
+                EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus
+            });
+
+            // WAVE 2
+            waves.Add(new[]
+            {
+                EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyBlueVirus, EnemyGreenVirus, EnemyGreenVirus,
+                EnemyGreenVirus, EnemyBlueVirus, EnemyBlueVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus
+            });
+
+            // WAVE 3
+            waves.Add(new[]
+            {
+                EnemyBlueVirus, EnemyBlueVirus, EnemyBlueVirus, EnemyBlueVirus, EnemyBlueVirus, EnemyBlueVirus,
+                EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyBlueVirus, EnemyBlueVirus, EnemyBlueVirus,
+                EnemyBlueVirus, EnemyBlueVirus, EnemyBlueVirus, EnemyBlueVirus, EnemyPurpleVirus
+            });
+
+            // WAVE 4
+            waves.Add(new[]
+            {
+                EnemyBlueVirus, EnemyBlueVirus, EnemyBlueVirus, EnemyPurpleVirus, EnemyBlueVirus, EnemyBlueVirus,
+                EnemyPurpleVirus, EnemyPurpleVirus, EnemyBlueVirus, EnemyBlueVirus, EnemyBlueVirus, EnemyBlueVirus,
+                EnemyPurpleVirus, EnemyPurpleVirus, EnemyPurpleVirus, EnemyPurpleVirus
+            });
+            
+            // WAVE 5
+            waves.Add(new[]
+            {
+                EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus,
+                EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus,
+                EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus,
+                EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus,
+                EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus,
+                EnemyPurpleVirus
+            });
+
+            waveText.text = string.Format("Wave 0 / {0}", waves.Count);
+        }
 
         private void Update()
         {
-            timer -= Time.deltaTime;
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                Time.timeScale /= 2;
+            }
 
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                Time.timeScale *= 2;
+            }
+
+            if (enemiesLeft == 0)
+            {
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    StartWave();
+                }
+
+                waveButton.interactable = true;
+                return;
+            }
+
+            waveButton.interactable = false;
+
+            timer -= Time.deltaTime;
             if (timer > 0) return;
 
-            timer = 2f;
+            timer = 1f;
 
-            Instantiate(EnemyPrefab).transform.position = SpawnPoint.position;
+            if (spawnedEnemy >= waves[wave].Length) return;
+
+            var enemy = waves[wave][spawnedEnemy];
+            var prefab = GetPrefab(enemy);
+
+            Instantiate(prefab).transform.position = SpawnPoint.position;
+            spawnedEnemy++;
+        }
+
+        private GameObject GetPrefab(int type)
+        {
+            switch (type)
+            {
+                case EnemyGreenVirus:
+                    return GreenVirusPrefab;
+
+                case EnemyBlueVirus:
+                    return BlueVirusPrefab;
+
+                case EnemyPurpleVirus:
+                    return PurpleVirusPrefab;
+
+                default:
+                    return null;
+            }
+        }
+
+        public void KilledEnemy()
+        {
+            enemiesLeft--;
+        }
+
+        // ReSharper disable once MemberCanBePrivate.Global
+        public void StartWave()
+        {
+            if (enemiesLeft != 0) return;
+
+            wave++;
+            enemiesLeft = waves[wave].Length;
+            spawnedEnemy = 0;
+
+            waveText.text = string.Format("Wave {0} / {1}", wave + 1, waves.Count);
+
+            Debug.Log(string.Format("Starting wave {0}", wave + 1));
         }
     }
 }
