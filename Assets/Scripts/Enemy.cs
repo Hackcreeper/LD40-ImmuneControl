@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.Remoting.Messaging;
 using LD40.Towers;
 using UnityEngine;
@@ -10,12 +11,13 @@ namespace LD40
         public float Speed = 5f;
         public int Damage = 1;
         public int StartHealth = 10;
-
+        public bool Reserved;
+        
         private int currentNode;
         private Vector3? targetPosition;
         private readonly List<Tower> stickyTargets = new List<Tower>();
         private float timer;
-        private Tower pulledBy;
+        private Transform pulledBy;
 
         private void Start()
         {
@@ -36,6 +38,12 @@ namespace LD40
 
         private void Update()
         {
+            if (pulledBy != null)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, pulledBy.position, 3 * Time.deltaTime);
+                return;
+            }
+            
             if (stickyTargets.Count > 0)
             {
                 timer -= Time.deltaTime;
@@ -49,13 +57,6 @@ namespace LD40
                         target.GetComponent<EntityHealth>().Sub(1 * Damage);
                     }
                 });
-
-                return;
-            }
-
-            if (pulledBy != null)
-            {
-                MoveToPullTower();
 
                 return;
             }
@@ -77,20 +78,13 @@ namespace LD40
             currentNode++;
             targetPosition = Route.Instance.GetPosition(currentNode);
         }
-
-        private void MoveToPullTower()
-        {
-            if (Vector3.Distance(transform.position, targetPosition.Value) > 0.1f)
-            {
-                transform.position = Vector3.MoveTowards(transform.position, pulledBy.transform.position,
-                    Speed * Time.deltaTime);
-            }
-        }
-
+        
         private void OnCollisionEnter(Collision other)
         {
             if (!other.gameObject.CompareTag("Tower")) return;
 
+            if (IsPulled()) return;
+            
             var target = other.gameObject.GetComponent<Tower>();
             if (!target.Sticky) return;
             
@@ -103,19 +97,24 @@ namespace LD40
             stickyTargets.Remove(tower);
         }
 
+        public void Pull(Tower tower)
+        {
+            pulledBy = tower.transform;
+        }
+
         public bool IsSticky()
         {
             return stickyTargets.Count > 0;
         }
 
-        public void Pull(Tower tower)
-        {
-            pulledBy = tower;
-        }
-
         public bool IsPulled()
         {
             return pulledBy != null;
+        }
+
+        public void Reserve()
+        {
+            Reserved = true;
         }
     }
 }

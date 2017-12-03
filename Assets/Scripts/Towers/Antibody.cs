@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 using UnityEngine;
 
 namespace LD40.Towers
@@ -11,7 +11,7 @@ namespace LD40.Towers
         private bool active;
         private bool reachedPosition;
         private bool dead;
-        
+
         private Transform targetEnemy;
         private float timer;
         private Vector3 originalPosition;
@@ -30,8 +30,8 @@ namespace LD40.Towers
                 targetEnemy = null;
 
                 gameObject.SetActive(false);
-                
-                attachedEnemies.ForEach(enemy => enemy.InformStickDeath(this));
+
+                AttachedEnemies.ForEach(enemy => enemy.InformStickDeath(this));
             };
 
             EnemySpawner.Instance.OnEnd += (sender, args) =>
@@ -40,7 +40,7 @@ namespace LD40.Towers
                 reachedPosition = false;
                 dead = false;
                 targetEnemy = null;
-                
+
                 gameObject.SetActive(true);
                 transform.position = originalPosition;
                 transform.rotation = originalRotation;
@@ -48,17 +48,18 @@ namespace LD40.Towers
                 health.Health = StartHealth;
             };
         }
-        
+
         protected override void OnUpdate()
         {
             if (dead) return;
-            
+
             if (!active)
             {
                 if (!CheckEnemy()) return;
 
                 active = true;
                 targetEnemy = GetNearestEnemy();
+                targetEnemy.GetComponent<Enemy>().Reserve();
             }
             else
             {
@@ -69,10 +70,10 @@ namespace LD40.Towers
                         active = false;
                         return;
                     }
-                    
+
                     transform.position =
                         Vector3.MoveTowards(transform.position, targetEnemy.position, 3 * Time.deltaTime);
-                    
+
                     transform.Rotate(new Vector3(0, 0, 20f));
 
                     if (Vector3.Distance(transform.position, targetEnemy.position) <= 0.3f)
@@ -88,10 +89,10 @@ namespace LD40.Towers
                     if (timer >= 0) return;
 
                     timer = 1f;
-                    attachedEnemies.ForEach(enemy =>
+                    AttachedEnemies.ForEach(enemy =>
                     {
                         if (enemy == null) return;
-                        
+
                         if (enemy.GetComponent<EntityHealth>().Sub(Damage))
                         {
                             Killed++;
@@ -109,7 +110,9 @@ namespace LD40.Towers
 
         private bool CheckEnemy()
         {
-            return Physics.CheckSphere(transform.position, Radius, EnemyMask);
+            var elements = Physics.OverlapSphere(transform.position, Radius, EnemyMask);
+
+            return elements.Length != 0 && elements.All(enemy => enemy.GetComponent<Enemy>().IsPulled() == false);
         }
 
         private Transform GetNearestEnemy()

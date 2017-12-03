@@ -92,7 +92,7 @@ namespace LD40
                 Time.timeScale *= 2;
             }
 
-            if (enemiesLeft == 0)
+            if (enemiesLeft <= 0)
             {
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
@@ -141,6 +141,7 @@ namespace LD40
         {
             enemiesLeft--;
 
+            if (enemiesLeft < 0) enemiesLeft = 0;
             if (enemiesLeft > 0) return;
             
             WarningText.SetActive(false);
@@ -155,7 +156,7 @@ namespace LD40
         // ReSharper disable once MemberCanBePrivate.Global
         public void StartWave()
         {
-            if (enemiesLeft != 0) return;
+            if (enemiesLeft > 0) return;
 
             wave++;
             enemiesLeft = waves[wave].Length;
