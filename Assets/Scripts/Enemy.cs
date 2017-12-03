@@ -1,7 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Runtime.Remoting.Messaging;
-using LD40.Towers;
 using UnityEngine;
 
 namespace LD40
@@ -13,7 +10,8 @@ namespace LD40
         public int StartHealth = 10;
         public bool Reserved;
         
-        private int currentNode;
+        protected int currentNode;
+        
         private Vector3? targetPosition;
         private readonly List<Tower> stickyTargets = new List<Tower>();
         private float timer;
@@ -90,7 +88,11 @@ namespace LD40
             
             stickyTargets.Add(target);
             target.InformEnemy(this);
+
+            OnSticky(target);
         }
+        
+        protected virtual void OnSticky(Tower tower) {}
 
         public void InformStickDeath(Tower tower)
         {
@@ -115,6 +117,11 @@ namespace LD40
         public void Reserve()
         {
             Reserved = true;
+        }
+
+        public void SetNode(int node)
+        {
+            currentNode = node;
         }
     }
 }

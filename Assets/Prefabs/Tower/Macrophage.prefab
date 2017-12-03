@@ -1339,11 +1339,10 @@ MonoBehaviour:
   Price: 20
   Radius: 1.2
   Damage: 200
+  Sticky: 0
+  AttachedEnemies: []
   Killed: 0
   Value: 0
-  EnemyMask:
-    serializedVersion: 2
-    m_Bits: 2048
 --- !u!135 &135486086287830046
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -1370,7 +1369,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 350001eb4dd353e4484d3406ff79a22a, type: 2}
+  - {fileID: 2100000, guid: 234d89e9c9e93e14c82370bc9e7a1ab1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
