@@ -52,13 +52,13 @@ namespace LD40
 
             if (!Physics.Raycast(ray, out hit, 1000, TowerPlacement.Instance.PlaceMask))
             {
-                // TODO: Some logic here to hide the tower completley
+                transform.position = new Vector3(0, -1000, 0);
                 return;
             }
 
             if (!hit.collider.CompareTag("Level"))
             {
-                // TODO: Some logic here to hide the tower completley
+                transform.position = new Vector3(0, -1000, 0);
                 return;
             }
 
