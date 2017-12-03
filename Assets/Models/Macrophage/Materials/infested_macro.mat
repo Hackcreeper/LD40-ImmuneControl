@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: New Material
+  m_Name: infested_macro
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _METALLICGLOSSMAP _NORMALMAP
   m_LightmapFlags: 4
@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 42a2e16ccd0e2dd4488e2a651893443e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 809049a29183d4f4a9bc4888a3cad08a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -40,11 +40,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: bbbf66bf8cfd19e488794761d502040a, type: 3}
+        m_Texture: {fileID: 2800000, guid: f11332213c61b3040b6311d931cb36f3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: edad7b548e35e9b4783070e0051a4487, type: 3}
+        m_Texture: {fileID: 2800000, guid: c4a14d56e306cbf489852169971bc0a6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
