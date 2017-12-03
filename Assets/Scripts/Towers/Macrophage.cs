@@ -60,7 +60,21 @@ namespace LD40.Towers
                 }
                 else
                 {
-                    transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, 10 * Time.deltaTime);
+                    if (!target)
+                    {
+                        eating = false;
+                        target = null;
+                        active = false;
+                        hasKilledAll = false;
+                        return;
+                    }
+                    
+                    if (target.GetComponent<RotationAnimation>())
+                    {
+                        Destroy(target.GetComponent<RotationAnimation>());
+                    }
+                    
+                    transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, delay / 2 * Time.deltaTime);
 
                     if (hasKilledAll && Vector3.Distance(transform.localScale, Vector3.one) <= 0.08f)
                     {
