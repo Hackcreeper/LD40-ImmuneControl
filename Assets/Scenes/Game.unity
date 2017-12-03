@@ -4301,6 +4301,7 @@ MonoBehaviour:
   Image: {fileID: 1625274307}
   Killed: {fileID: 298764865}
   Sell: {fileID: 1408772105}
+  SellButton: {fileID: 999627059}
 --- !u!114 &1545233540
 MonoBehaviour:
   m_ObjectHideFlags: 0

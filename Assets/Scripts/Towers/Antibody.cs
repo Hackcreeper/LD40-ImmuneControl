@@ -97,6 +97,11 @@ namespace LD40.Towers
 
             EnemySpawner.Instance.OnEnd += (sender, args) =>
             {
+                if (!this)
+                {
+                    return;
+                }
+                
                 active = false;
                 reachedPosition = false;
                 dead = false;

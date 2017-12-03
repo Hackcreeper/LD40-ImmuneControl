@@ -12,6 +12,7 @@ namespace LD40
         public Image Image;
         public Text Killed;
         public Text Sell;
+        public Button SellButton;
         
         private Tower currentTower;
 
@@ -52,9 +53,19 @@ namespace LD40
 
         public void SellTower()
         {
+            if (EnemySpawner.Instance.IsWaveOngoing())
+            {
+                return;
+            }
+            
             Cells.Instance.Add(currentTower.Value);
             Destroy(currentTower.gameObject);
             Close();
+        }
+
+        public void SetSellButtonState(bool activated)
+        {
+            SellButton.interactable = activated;
         }
     }
 }

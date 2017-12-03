@@ -133,6 +133,8 @@ namespace LD40.Towers
 
             EnemySpawner.Instance.OnEnd += (sender, args) =>
             {
+                if (!this) return;
+                
                 dead = false;
                 target = null;
                 eating = false;

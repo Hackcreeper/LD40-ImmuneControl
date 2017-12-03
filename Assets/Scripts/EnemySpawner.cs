@@ -182,6 +182,8 @@ namespace LD40
             WarningText.SetActive(false);
             TowersPanel.SetActive(true);
 
+            DetailPanel.Instance.SetSellButtonState(true);
+            
             if (OnEnd != null)
             {
                 OnEnd.Invoke(this, EventArgs.Empty);
@@ -198,6 +200,8 @@ namespace LD40
         {
             if (enemiesLeft > 0) return;
 
+            DetailPanel.Instance.SetSellButtonState(false);
+            
             wave++;
             enemiesLeft = waves[wave].Length;
             spawnedEnemy = 0;
@@ -214,6 +218,11 @@ namespace LD40
         public void IncreaseEnemiesLeft()
         {
             enemiesLeft++;
+        }
+
+        public bool IsWaveOngoing()
+        {
+            return enemiesLeft > 0;
         }
     }
 }
