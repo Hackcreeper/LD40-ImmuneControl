@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Rendering;
 
 namespace LD40
@@ -8,32 +9,58 @@ namespace LD40
         public string Name;
         public Sprite Image;
         public int Price;
-        
-        [HideInInspector]
-        public int Killed;
-        
-        [HideInInspector]
-        public int Value;
-        
+        public float Radius = 2f;
+        public int Damage = 5;
+        public bool Sticky;
+
+        [HideInInspector] public int Killed;
+
+        [HideInInspector] public int Value;
+
+        protected readonly List<Enemy> attachedEnemies = new List<Enemy>();
+
         private bool placing = true;
         private Color originalColor;
         private MeshRenderer circle;
+        private Renderer renderer;
 
         private void Start()
         {
-            originalColor = GetComponent<MeshRenderer>().material.color;
+            renderer = GetComponentInChildren<MeshRenderer>();
+            if (renderer == null)
+            {
+                renderer = GetComponentInChildren<SkinnedMeshRenderer>();
+            }
+            
+            
+            originalColor = renderer.material.color;
+
+            Value = Mathf.FloorToInt(Price * 0.6f);
+            
+            OnStart();
         }
-        
+
         private void Update()
         {
-            if (!placing) return;
+            if (!placing)
+            {
+                OnUpdate();
+                return;
+            }
 
             CreateCircleIfNotExists();
-            
+            circle.transform.position = transform.position + new Vector3(0, .1f, 0);
+
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-                
+
             if (!Physics.Raycast(ray, out hit, 1000, TowerPlacement.Instance.PlaceMask))
+            {
+                // TODO: Some logic here to hide the tower completley
+                return;
+            }
+
+            if (!hit.collider.CompareTag("Level"))
             {
                 // TODO: Some logic here to hide the tower completley
                 return;
@@ -43,13 +70,35 @@ namespace LD40
             transform.position = hit.point;
 
             canPlace = canPlace && Cells.Instance.Check(Price);
-            
+
             SetColor(canPlace ? Color.green : Color.red, 0.5f, true, false);
 
             if (canPlace && Input.GetMouseButtonDown(0))
             {
                 Place();
             }
+        }
+        
+        protected virtual void OnUpdate()
+        {
+        }
+
+        protected virtual void OnStart()
+        {
+        }
+
+        protected virtual void OnPlace()
+        {
+        }
+
+        public void InformEnemy(Enemy enemy)
+        {
+            attachedEnemies.Add(enemy);
+        }
+
+        public void InformDeath(Enemy enemy)
+        {
+            attachedEnemies.Remove(enemy);
         }
 
         private void OnMouseDown()
@@ -62,39 +111,38 @@ namespace LD40
         private void Place()
         {
             if (!Cells.Instance.Sub(Price)) return;
-            
+
             placing = false;
             gameObject.layer = LayerMask.NameToLayer("Tower");
-            SetColor(originalColor, 1f, false, true);
+            SetColor(originalColor, originalColor.a, false, true);
             Destroy(circle.gameObject);
             TowerPlacement.Instance.Placed();
+
+            OnPlace();
         }
-        
+
         private void CreateCircleIfNotExists()
         {
             if (circle != null) return;
-            
+
             circle = Instantiate(TowerPlacement.Instance.CirclePrefab).GetComponent<MeshRenderer>();
-            circle.transform.SetParent(transform);
-            circle.transform.localPosition = new Vector3(0, .1f, 0);
+            circle.transform.localScale = new Vector3(Radius*2, 0.01f, Radius*2);
         }
 
         private void SetColor(Color color, float alpha, bool colorizeCircle, bool shadows)
         {
-            var meshRenderer = gameObject.GetComponent<MeshRenderer>();
-
             if (shadows)
             {
-                meshRenderer.receiveShadows = true;
-                meshRenderer.shadowCastingMode = ShadowCastingMode.On;
+                renderer.receiveShadows = true;
+                renderer.shadowCastingMode = ShadowCastingMode.On;
             }
             else
             {
-                meshRenderer.receiveShadows = false;
-                meshRenderer.shadowCastingMode = ShadowCastingMode.Off;   
+                renderer.receiveShadows = false;
+                renderer.shadowCastingMode = ShadowCastingMode.Off;
             }
-            
-            meshRenderer.material.color = new Color(
+
+            renderer.material.color = new Color(
                 color.r, color.g, color.b, alpha
             );
 
@@ -102,7 +150,15 @@ namespace LD40
             {
                 circle.material.color = new Color(
                     color.r, color.g, color.b, 0.15f
-                );                
+                );
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (circle)
+            {
+                Destroy(circle.gameObject);
             }
         }
     }

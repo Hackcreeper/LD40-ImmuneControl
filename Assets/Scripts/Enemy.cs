@@ -1,37 +1,121 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
+using LD40.Towers;
+using UnityEngine;
 
 namespace LD40
 {
     public class Enemy : MonoBehaviour
     {
         public float Speed = 5f;
-        public int DamageMultiplier = 1;
+        public int Damage = 1;
+        public int StartHealth = 10;
 
         private int currentNode;
-        private float progress;
         private Vector3? targetPosition;
+        private readonly List<Tower> stickyTargets = new List<Tower>();
+        private float timer;
+        private Tower pulledBy;
 
         private void Start()
         {
             targetPosition = Route.Instance.GetPosition(currentNode);
+
+            var entityHealth = gameObject.AddComponent<EntityHealth>();
+            entityHealth.Health = StartHealth;
+            entityHealth.OnDead += (sender, args) =>
+            {
+                Cells.Instance.Add(Damage);
+                EnemySpawner.Instance.KilledEnemy();
+                if (stickyTargets.Count > 0)
+                {
+                    stickyTargets.ForEach(target => target.InformDeath(this));
+                }
+            };
         }
 
         private void Update()
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition.Value, Speed * Time.deltaTime);
+            if (stickyTargets.Count > 0)
+            {
+                timer -= Time.deltaTime;
+                if (timer > 0) return;
+
+                timer = 1f;
+                stickyTargets.ForEach(target =>
+                {
+                    if (target.GetComponent<EntityHealth>())
+                    {
+                        target.GetComponent<EntityHealth>().Sub(1 * Damage);
+                    }
+                });
+
+                return;
+            }
+
+            if (pulledBy != null)
+            {
+                MoveToPullTower();
+
+                return;
+            }
+
+            if (!targetPosition.HasValue)
+            {
+                Health.Instance.Sub(1 * Damage);
+                EnemySpawner.Instance.KilledEnemy();
+                Destroy(gameObject);
+
+                return;
+            }
+
+            transform.position =
+                Vector3.MoveTowards(transform.position, targetPosition.Value, Speed * Time.deltaTime);
 
             if (!(Vector3.Distance(transform.position, targetPosition.Value) <= 0.1f)) return;
-            
-            progress = 0;
-                
+
             currentNode++;
             targetPosition = Route.Instance.GetPosition(currentNode);
+        }
 
-            if (targetPosition != null) return;
+        private void MoveToPullTower()
+        {
+            if (Vector3.Distance(transform.position, targetPosition.Value) > 0.1f)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, pulledBy.transform.position,
+                    Speed * Time.deltaTime);
+            }
+        }
+
+        private void OnCollisionEnter(Collision other)
+        {
+            if (!other.gameObject.CompareTag("Tower")) return;
+
+            var target = other.gameObject.GetComponent<Tower>();
+            if (!target.Sticky) return;
             
-            Health.Instance.Sub(1 * DamageMultiplier);
-            EnemySpawner.Instance.KilledEnemy();
-            Destroy(gameObject);
+            stickyTargets.Add(target);
+            target.InformEnemy(this);
+        }
+
+        public void InformStickDeath(Tower tower)
+        {
+            stickyTargets.Remove(tower);
+        }
+
+        public bool IsSticky()
+        {
+            return stickyTargets.Count > 0;
+        }
+
+        public void Pull(Tower tower)
+        {
+            pulledBy = tower;
+        }
+
+        public bool IsPulled()
+        {
+            return pulledBy != null;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +16,10 @@ namespace LD40
         public Transform SpawnPoint;
         public Button waveButton;
         public Text waveText;
+        public GameObject WarningText;
+        public GameObject TowersPanel;
+
+        public event EventHandler<EventArgs> OnEnd;
 
         private const int EnemyGreenVirus = 1;
         private const int EnemyBlueVirus = 2;
@@ -27,7 +32,7 @@ namespace LD40
         private int enemiesLeft;
         private int spawnedEnemy;
 
-        private void Start()
+        private void Awake()
         {
             Instance = this;
 
@@ -60,7 +65,7 @@ namespace LD40
                 EnemyPurpleVirus, EnemyPurpleVirus, EnemyBlueVirus, EnemyBlueVirus, EnemyBlueVirus, EnemyBlueVirus,
                 EnemyPurpleVirus, EnemyPurpleVirus, EnemyPurpleVirus, EnemyPurpleVirus
             });
-            
+
             // WAVE 5
             waves.Add(new[]
             {
@@ -135,6 +140,16 @@ namespace LD40
         public void KilledEnemy()
         {
             enemiesLeft--;
+
+            if (enemiesLeft > 0) return;
+            
+            WarningText.SetActive(false);
+            TowersPanel.SetActive(true);
+
+            if (OnEnd != null)
+            {
+                OnEnd.Invoke(this, EventArgs.Empty);
+            }
         }
 
         // ReSharper disable once MemberCanBePrivate.Global
@@ -149,6 +164,10 @@ namespace LD40
             waveText.text = string.Format("Wave {0} / {1}", wave + 1, waves.Count);
 
             Debug.Log(string.Format("Starting wave {0}", wave + 1));
+
+            WarningText.SetActive(true);
+            TowersPanel.SetActive(false);
+            TowerPlacement.Instance.Cancel();
         }
     }
 }

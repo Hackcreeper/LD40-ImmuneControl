@@ -49,5 +49,12 @@ namespace LD40
             currentTower = null;
             Panel.gameObject.SetActive(false);
         }
+
+        public void SellTower()
+        {
+            Cells.Instance.Add(currentTower.Value);
+            Destroy(currentTower.gameObject);
+            Close();
+        }
     }
 }

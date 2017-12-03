@@ -21,6 +21,11 @@ namespace LD40
             Text.text = string.Format("Cells: {0}", Amount);
         }
 
+        public void Add(int value)
+        {
+            Amount += value;
+        }
+
         public bool Sub(int wanted)
         {
             if (Amount < wanted) return false;

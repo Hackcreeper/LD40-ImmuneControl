@@ -22,7 +22,8 @@ GameObject:
   - component: {fileID: 95287304890796708}
   - component: {fileID: 114785632781578294}
   - component: {fileID: 114817099022286080}
-  m_Layer: 0
+  - component: {fileID: 135573986718601870}
+  m_Layer: 11
   m_Name: BlueVirus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +40,7 @@ GameObject:
   - component: {fileID: 4496438218315576}
   - component: {fileID: 33928543901134586}
   - component: {fileID: 23248669700020656}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: 3DSMesh_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -143,7 +144,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 5.6
-  DamageMultiplier: 2
+  Damage: 2
+  StartHealth: 15
 --- !u!114 &114817099022286080
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -155,3 +157,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d754c9a65fa4f798816920f5333f4d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &135573986718601870
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1920548801142378}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.18
+  m_Center: {x: 0, y: 0, z: 0}
