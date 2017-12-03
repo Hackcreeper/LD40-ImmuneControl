@@ -5,7 +5,7 @@ namespace LD40
     public class TowerPlacement : MonoBehaviour
     {
         public GameObject CirclePrefab;
-        
+
         public LayerMask PlaceMask;
         public LayerMask TowerMask;
 
@@ -21,7 +21,7 @@ namespace LD40
         private void Update()
         {
             if (!placingTower) return;
-            
+
             if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1))
             {
                 Destroy(placingTower.gameObject);
@@ -37,13 +37,20 @@ namespace LD40
             {
                 DetailPanel.Instance.Close();
             }
-            
+
             placingTower = Instantiate(prefab).GetComponent<Tower>();
         }
 
         public void Placed()
         {
             placingTower = null;
+        }
+
+        public void Cancel()
+        {
+            if (!placingTower) return;
+
+            Destroy(placingTower.gameObject);
         }
     }
 }

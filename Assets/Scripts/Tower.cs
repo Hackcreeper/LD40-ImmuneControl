@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Rendering;
 
 namespace LD40
@@ -8,6 +9,8 @@ namespace LD40
         public string Name;
         public Sprite Image;
         public int Price;
+        public float Radius = 2f;
+        public int Damage = 5;
         
         [HideInInspector]
         public int Killed;
@@ -15,18 +18,28 @@ namespace LD40
         [HideInInspector]
         public int Value;
         
+        protected readonly List<Enemy> attachedEnemies = new List<Enemy>();
+        
         private bool placing = true;
         private Color originalColor;
         private MeshRenderer circle;
+        private MeshRenderer renderer;
 
         private void Start()
         {
-            originalColor = GetComponent<MeshRenderer>().material.color;
+            renderer = GetComponentInChildren<MeshRenderer>();
+            originalColor = renderer.material.color;
+            
+            OnStart();
         }
         
         private void Update()
         {
-            if (!placing) return;
+            if (!placing)
+            {
+                OnUpdate();
+                return;
+            }
 
             CreateCircleIfNotExists();
             
@@ -51,6 +64,22 @@ namespace LD40
                 Place();
             }
         }
+        
+        protected virtual void OnUpdate() {}
+        
+        protected virtual void OnStart() {}
+        
+        protected virtual void OnPlace() {}
+
+        public void InformEnemy(Enemy enemy)
+        {
+            attachedEnemies.Add(enemy);
+        }
+
+        public void InformDeath(Enemy enemy)
+        {
+            attachedEnemies.Remove(enemy);
+        }
 
         private void OnMouseDown()
         {
@@ -68,6 +97,8 @@ namespace LD40
             SetColor(originalColor, 1f, false, true);
             Destroy(circle.gameObject);
             TowerPlacement.Instance.Placed();
+            
+            OnPlace();
         }
         
         private void CreateCircleIfNotExists()
@@ -77,24 +108,23 @@ namespace LD40
             circle = Instantiate(TowerPlacement.Instance.CirclePrefab).GetComponent<MeshRenderer>();
             circle.transform.SetParent(transform);
             circle.transform.localPosition = new Vector3(0, .1f, 0);
+            circle.transform.localScale = new Vector3(Radius, 0.01f, Radius);
         }
 
         private void SetColor(Color color, float alpha, bool colorizeCircle, bool shadows)
         {
-            var meshRenderer = gameObject.GetComponent<MeshRenderer>();
-
             if (shadows)
             {
-                meshRenderer.receiveShadows = true;
-                meshRenderer.shadowCastingMode = ShadowCastingMode.On;
+                renderer.receiveShadows = true;
+                renderer.shadowCastingMode = ShadowCastingMode.On;
             }
             else
             {
-                meshRenderer.receiveShadows = false;
-                meshRenderer.shadowCastingMode = ShadowCastingMode.Off;   
+                renderer.receiveShadows = false;
+                renderer.shadowCastingMode = ShadowCastingMode.Off;   
             }
             
-            meshRenderer.material.color = new Color(
+            renderer.material.color = new Color(
                 color.r, color.g, color.b, alpha
             );
 
