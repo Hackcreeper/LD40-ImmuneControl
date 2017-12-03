@@ -34,6 +34,7 @@ namespace LD40
 
         public void Sub(int value)
         {
+            value *= 2;
             Amount -= value;
 
             if (Amount <= 0)
