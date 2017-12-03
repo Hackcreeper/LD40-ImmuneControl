@@ -21,11 +21,17 @@ namespace LD40
         private bool placing = true;
         private Color originalColor;
         private MeshRenderer circle;
-        private MeshRenderer renderer;
+        private Renderer renderer;
 
         private void Start()
         {
             renderer = GetComponentInChildren<MeshRenderer>();
+            if (renderer == null)
+            {
+                renderer = GetComponentInChildren<SkinnedMeshRenderer>();
+            }
+            
+            
             originalColor = renderer.material.color;
 
             Value = Mathf.FloorToInt(Price * 0.6f);
