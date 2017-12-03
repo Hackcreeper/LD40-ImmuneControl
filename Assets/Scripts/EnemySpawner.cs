@@ -14,6 +14,7 @@ namespace LD40
         public GameObject PurpleVirusPrefab;
         public GameObject SmallpoxPrefab;
         public GameObject InfestedAntibodyPrefab;
+        public GameObject InfestedMacrophagePrefab;
 
         public Transform SpawnPoint;
         public Button waveButton;
@@ -28,6 +29,7 @@ namespace LD40
         private const int EnemyPurpleVirus = 3;
         private const int EnemySmallpox = 4;
         private const int EnemyInfestedAntibody = 5;
+        private const int EnemyInfestedMacrophage = 6;
 
         private float timer;
         private readonly List<int[]> waves = new List<int[]>();
@@ -43,8 +45,6 @@ namespace LD40
             // WAVE 1
             waves.Add(new[]
             {
-                EnemySmallpox, EnemySmallpox, EnemySmallpox,
-                
                 EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus,
                 EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus
             });
@@ -89,6 +89,15 @@ namespace LD40
                 EnemyPurpleVirus, EnemyPurpleVirus, EnemySmallpox, EnemyPurpleVirus, EnemyPurpleVirus, EnemyPurpleVirus,
                 EnemySmallpox, EnemyPurpleVirus, EnemyPurpleVirus, EnemyPurpleVirus, EnemySmallpox, EnemyPurpleVirus,
                 EnemyPurpleVirus, EnemyPurpleVirus, EnemySmallpox
+            });
+            
+            // WAVE 7
+            waves.Add(new[]
+            {
+                EnemySmallpox, EnemySmallpox, EnemyPurpleVirus, EnemyPurpleVirus, EnemyBlueVirus, EnemySmallpox,
+                EnemySmallpox, EnemyPurpleVirus, EnemySmallpox, EnemyPurpleVirus, EnemySmallpox, EnemyBlueVirus,
+                EnemyGreenVirus, EnemyPurpleVirus, EnemySmallpox, EnemySmallpox, EnemySmallpox, EnemyPurpleVirus, 
+                EnemyBlueVirus, EnemyPurpleVirus, EnemySmallpox, EnemyGreenVirus
             });
 
             waveText.text = string.Format("Wave 0 / {0}", waves.Count);
@@ -151,6 +160,9 @@ namespace LD40
 
                 case EnemyInfestedAntibody:
                     return InfestedAntibodyPrefab;
+
+                case EnemyInfestedMacrophage:
+                    return InfestedMacrophagePrefab;
 
                 default:
                     return null;

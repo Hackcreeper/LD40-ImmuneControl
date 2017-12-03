@@ -11,12 +11,12 @@ namespace LD40
         public bool Reserved;
         
         protected int currentNode;
+        protected Transform pulledBy;
         
         private Vector3? targetPosition;
         private readonly List<Tower> stickyTargets = new List<Tower>();
         private float timer;
-        private Transform pulledBy;
-
+        
         private void Start()
         {
             targetPosition = Route.Instance.GetPosition(currentNode);
@@ -36,6 +36,8 @@ namespace LD40
 
         private void Update()
         {
+            OnUpdate();
+            
             if (pulledBy != null)
             {
                 transform.position = Vector3.MoveTowards(transform.position, pulledBy.position, 3 * Time.deltaTime);
@@ -93,6 +95,8 @@ namespace LD40
         }
         
         protected virtual void OnSticky(Tower tower) {}
+        
+        protected virtual void OnUpdate() {}
 
         public void InformStickDeath(Tower tower)
         {
@@ -122,6 +126,11 @@ namespace LD40
         public void SetNode(int node)
         {
             currentNode = node;
+        }
+
+        public void Free()
+        {
+            pulledBy = null;
         }
     }
 }

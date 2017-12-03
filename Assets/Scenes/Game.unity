@@ -3621,6 +3621,8 @@ MonoBehaviour:
     type: 2}
   InfestedAntibodyPrefab: {fileID: 1717939681860020, guid: c64b1a743ae934d1893b0c9b61b8e37c,
     type: 2}
+  InfestedMacrophagePrefab: {fileID: 1898166925066052, guid: 5af63c856f8d8414bae26072eb309326,
+    type: 2}
   SpawnPoint: {fileID: 883529470}
   waveButton: {fileID: 1152778804}
   waveText: {fileID: 1176289442}
