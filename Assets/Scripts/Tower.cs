@@ -12,12 +12,12 @@ namespace LD40
         public float Radius = 2f;
         public int Damage = 5;
         public bool Sticky;
+        
+        public List<Enemy> AttachedEnemies = new List<Enemy>();
 
         [HideInInspector] public int Killed;
 
         [HideInInspector] public int Value;
-
-        protected readonly List<Enemy> attachedEnemies = new List<Enemy>();
 
         private bool placing = true;
         private Color originalColor;
@@ -26,13 +26,9 @@ namespace LD40
 
         private void Start()
         {
-            renderer = GetComponentInChildren<MeshRenderer>();
-            if (renderer == null)
-            {
-                renderer = GetComponentInChildren<SkinnedMeshRenderer>();
-            }
-            
-            
+            renderer = GetComponentInChildren<MeshRenderer>() ?? (Renderer) GetComponentInChildren<SkinnedMeshRenderer>();
+
+
             originalColor = renderer.material.color;
 
             Value = Mathf.FloorToInt(Price * 0.6f);
@@ -56,13 +52,13 @@ namespace LD40
 
             if (!Physics.Raycast(ray, out hit, 1000, TowerPlacement.Instance.PlaceMask))
             {
-                // TODO: Some logic here to hide the tower completley
+                transform.position = new Vector3(0, -1000, 0);
                 return;
             }
 
             if (!hit.collider.CompareTag("Level"))
             {
-                // TODO: Some logic here to hide the tower completley
+                transform.position = new Vector3(0, -1000, 0);
                 return;
             }
 
@@ -93,12 +89,12 @@ namespace LD40
 
         public void InformEnemy(Enemy enemy)
         {
-            attachedEnemies.Add(enemy);
+            AttachedEnemies.Add(enemy);
         }
 
         public void InformDeath(Enemy enemy)
         {
-            attachedEnemies.Remove(enemy);
+            AttachedEnemies.Remove(enemy);
         }
 
         private void OnMouseDown()
@@ -160,6 +156,11 @@ namespace LD40
             {
                 Destroy(circle.gameObject);
             }
+        }
+
+        public bool HasAttached()
+        {
+            return AttachedEnemies.Count > 0;
         }
     }
 }

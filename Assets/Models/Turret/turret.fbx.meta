@@ -1,24 +1,43 @@
 fileFormatVersion: 2
-guid: 2ed27d1d567cc7c45a3324ca72848fb8
-timeCreated: 1512314984
+guid: 856891552e8f70c46aff7ef726b9c54c
+timeCreated: 1512319468
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: 3DSMesh_0
-    100002: //RootNode
-    400000: 3DSMesh_0
-    400002: //RootNode
-    2300000: 3DSMesh_0
-    3300000: 3DSMesh_0
-    4300000: 3DSMesh_0
+    100000: Armature
+    100002: Bone
+    100004: Bone.001
+    100006: Bone.001_end
+    100008: Camera
+    100010: Cube
+    100012: Cube.001
+    100014: Lamp
+    100016: //RootNode
+    400000: Armature
+    400002: Bone
+    400004: Bone.001
+    400006: Bone.001_end
+    400008: Camera
+    400010: Cube
+    400012: Cube.001
+    400014: Lamp
+    400016: //RootNode
+    2000000: Camera
+    2300000: Cube
+    3300000: Cube
+    4300000: Cube.001
+    4300002: Cube
+    7400000: Armature|ArmatureAction
     9500000: //RootNode
+    10800000: Lamp
+    13700000: Cube.001
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: None
-    second: {fileID: 2100000, guid: a24bde077dd0dbd4eba9074be3327330, type: 2}
+      name: No Name
+    second: {fileID: 2100000, guid: bc3c461602a1d434da726d5de9ddfe94, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -48,7 +67,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 0.05
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importVisibility: 1
