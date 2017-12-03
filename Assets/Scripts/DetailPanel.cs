@@ -23,9 +23,14 @@ namespace LD40
 
         private void Update()
         {
-            if (!currentTower || !Input.GetKeyDown(KeyCode.Escape)) return;
+            if (!currentTower) return;
 
-            Close();
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Close();
+            }
+            
+            Killed.text = string.Format("Killed {0} enemies!", currentTower.Killed);
         }
 
         public void Open(Tower tower)

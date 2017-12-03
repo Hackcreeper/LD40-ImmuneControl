@@ -69,7 +69,7 @@ namespace LD40.Towers
             var bullet = Instantiate(BulletPrefab);
             bullet.transform.position = ShotSpawn.position;
             bullet.transform.rotation = Head.transform.rotation;
-            bullet.GetComponent<Bullet>().SetDamage(Damage);
+            bullet.GetComponent<Bullet>().SetSpawner(this);
             
             GetComponent<AudioSource>().Play();
         }

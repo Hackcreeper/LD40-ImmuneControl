@@ -97,6 +97,7 @@ namespace LD40.Towers
                         if (timer > 0) return;
 
                         target.GetComponent<EntityHealth>().Sub(Damage);
+                        Killed++;
 
                         hasKilledAll = true;
                         timer = delay;
