@@ -43,6 +43,8 @@ namespace LD40
             // WAVE 1
             waves.Add(new[]
             {
+                EnemySmallpox, EnemySmallpox, EnemySmallpox,
+                
                 EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus,
                 EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus
             });
