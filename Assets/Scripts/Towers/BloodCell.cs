@@ -29,6 +29,12 @@ namespace LD40.Towers
                 return;
             }
 
+            if (enemy.GetComponent<Enemy>().IsPulled())
+            {
+                enemy = null;
+                return;
+            }
+
             var lookPos = enemy.transform.position - Head.position;
             lookPos.y = 0;
             var rotation = Quaternion.LookRotation(lookPos);
