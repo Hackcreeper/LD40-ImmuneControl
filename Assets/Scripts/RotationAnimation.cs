@@ -4,11 +4,14 @@ namespace LD40
 {
     public class RotationAnimation : MonoBehaviour
     {
+        public float Min = 1f;
+        public float Max = 10f;
+        
         private float speed;
 
         private void Start()
         {
-            speed = Random.Range(1f, 10f);
+            speed = Random.Range(Min, Max);
         }
 
         private void Update()
