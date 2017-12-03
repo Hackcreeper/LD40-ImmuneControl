@@ -11,15 +11,13 @@ namespace LD40
         public int Price;
         public float Radius = 2f;
         public int Damage = 5;
-        
-        [HideInInspector]
-        public int Killed;
-        
-        [HideInInspector]
-        public int Value;
-        
+
+        [HideInInspector] public int Killed;
+
+        [HideInInspector] public int Value;
+
         protected readonly List<Enemy> attachedEnemies = new List<Enemy>();
-        
+
         private bool placing = true;
         private Color originalColor;
         private MeshRenderer circle;
@@ -29,10 +27,10 @@ namespace LD40
         {
             renderer = GetComponentInChildren<MeshRenderer>();
             originalColor = renderer.material.color;
-            
+
             OnStart();
         }
-        
+
         private void Update()
         {
             if (!placing)
@@ -42,10 +40,11 @@ namespace LD40
             }
 
             CreateCircleIfNotExists();
-            
+            circle.transform.position = transform.position + new Vector3(0, .1f, 0);
+
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-                
+
             if (!Physics.Raycast(ray, out hit, 1000, TowerPlacement.Instance.PlaceMask))
             {
                 // TODO: Some logic here to hide the tower completley
@@ -56,7 +55,7 @@ namespace LD40
             transform.position = hit.point;
 
             canPlace = canPlace && Cells.Instance.Check(Price);
-            
+
             SetColor(canPlace ? Color.green : Color.red, 0.5f, true, false);
 
             if (canPlace && Input.GetMouseButtonDown(0))
@@ -64,12 +63,18 @@ namespace LD40
                 Place();
             }
         }
-        
-        protected virtual void OnUpdate() {}
-        
-        protected virtual void OnStart() {}
-        
-        protected virtual void OnPlace() {}
+
+        protected virtual void OnUpdate()
+        {
+        }
+
+        protected virtual void OnStart()
+        {
+        }
+
+        protected virtual void OnPlace()
+        {
+        }
 
         public void InformEnemy(Enemy enemy)
         {
@@ -91,24 +96,22 @@ namespace LD40
         private void Place()
         {
             if (!Cells.Instance.Sub(Price)) return;
-            
+
             placing = false;
             gameObject.layer = LayerMask.NameToLayer("Tower");
             SetColor(originalColor, 1f, false, true);
             Destroy(circle.gameObject);
             TowerPlacement.Instance.Placed();
-            
+
             OnPlace();
         }
-        
+
         private void CreateCircleIfNotExists()
         {
             if (circle != null) return;
-            
+
             circle = Instantiate(TowerPlacement.Instance.CirclePrefab).GetComponent<MeshRenderer>();
-            circle.transform.SetParent(transform);
-            circle.transform.localPosition = new Vector3(0, .1f, 0);
-            circle.transform.localScale = new Vector3(Radius, 0.01f, Radius);
+            circle.transform.localScale = new Vector3(Radius*2, 0.01f, Radius*2);
         }
 
         private void SetColor(Color color, float alpha, bool colorizeCircle, bool shadows)
@@ -121,9 +124,9 @@ namespace LD40
             else
             {
                 renderer.receiveShadows = false;
-                renderer.shadowCastingMode = ShadowCastingMode.Off;   
+                renderer.shadowCastingMode = ShadowCastingMode.Off;
             }
-            
+
             renderer.material.color = new Color(
                 color.r, color.g, color.b, alpha
             );
@@ -132,7 +135,7 @@ namespace LD40
             {
                 circle.material.color = new Color(
                     color.r, color.g, color.b, 0.15f
-                );                
+                );
             }
         }
     }
