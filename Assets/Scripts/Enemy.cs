@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
+using LD40.Towers;
 using UnityEngine;
 
 namespace LD40
@@ -14,6 +15,7 @@ namespace LD40
         private Vector3? targetPosition;
         private readonly List<Tower> stickyTargets = new List<Tower>();
         private float timer;
+        private Tower pulledBy;
 
         private void Start()
         {
@@ -40,7 +42,21 @@ namespace LD40
                 if (timer > 0) return;
 
                 timer = 1f;
-                stickyTargets.ForEach(target => target.GetComponent<EntityHealth>().Sub(1 * Damage));
+                stickyTargets.ForEach(target =>
+                {
+                    if (target.GetComponent<EntityHealth>())
+                    {
+                        target.GetComponent<EntityHealth>().Sub(1 * Damage);
+                    }
+                });
+
+                return;
+            }
+
+            if (pulledBy != null)
+            {
+                MoveToPullTower();
+
                 return;
             }
 
@@ -62,11 +78,22 @@ namespace LD40
             targetPosition = Route.Instance.GetPosition(currentNode);
         }
 
+        private void MoveToPullTower()
+        {
+            if (Vector3.Distance(transform.position, targetPosition.Value) > 0.1f)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, pulledBy.transform.position,
+                    Speed * Time.deltaTime);
+            }
+        }
+
         private void OnCollisionEnter(Collision other)
         {
             if (!other.gameObject.CompareTag("Tower")) return;
 
             var target = other.gameObject.GetComponent<Tower>();
+            if (!target.Sticky) return;
+            
             stickyTargets.Add(target);
             target.InformEnemy(this);
         }
@@ -74,6 +101,21 @@ namespace LD40
         public void InformStickDeath(Tower tower)
         {
             stickyTargets.Remove(tower);
+        }
+
+        public bool IsSticky()
+        {
+            return stickyTargets.Count > 0;
+        }
+
+        public void Pull(Tower tower)
+        {
+            pulledBy = tower;
+        }
+
+        public bool IsPulled()
+        {
+            return pulledBy != null;
         }
     }
 }

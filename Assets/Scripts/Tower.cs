@@ -11,6 +11,7 @@ namespace LD40
         public int Price;
         public float Radius = 2f;
         public int Damage = 5;
+        public bool Sticky;
 
         [HideInInspector] public int Killed;
 
@@ -77,7 +78,7 @@ namespace LD40
                 Place();
             }
         }
-
+        
         protected virtual void OnUpdate()
         {
         }
@@ -113,7 +114,7 @@ namespace LD40
 
             placing = false;
             gameObject.layer = LayerMask.NameToLayer("Tower");
-            SetColor(originalColor, 1f, false, true);
+            SetColor(originalColor, originalColor.a, false, true);
             Destroy(circle.gameObject);
             TowerPlacement.Instance.Placed();
 

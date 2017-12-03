@@ -175,6 +175,7 @@ MonoBehaviour:
   Price: 8
   Radius: 1.5
   Damage: 5
+  Sticky: 1
   Killed: 0
   Value: 0
   EnemyMask:
