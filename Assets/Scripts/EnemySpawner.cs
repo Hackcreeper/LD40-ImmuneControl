@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace LD40
@@ -34,7 +35,7 @@ namespace LD40
         private float timer;
         private readonly List<int[]> waves = new List<int[]>();
 
-        private int wave = -1;
+        private int wave = 5;
         private int enemiesLeft;
         private int spawnedEnemy;
 
@@ -182,6 +183,11 @@ namespace LD40
             if (OnEnd != null)
             {
                 OnEnd.Invoke(this, EventArgs.Empty);
+            }
+
+            if (wave + 1 == waves.Count)
+            {
+                SceneManager.LoadScene("Win");
             }
         }
 
