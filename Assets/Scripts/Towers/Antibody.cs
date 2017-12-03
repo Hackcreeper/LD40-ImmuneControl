@@ -7,6 +7,7 @@ namespace LD40.Towers
     {
         public LayerMask EnemyMask;
         public int StartHealth = 20;
+        public AudioClip StartSound;
 
         private bool active;
         private bool reachedPosition;
@@ -16,38 +17,6 @@ namespace LD40.Towers
         private float timer;
         private Vector3 originalPosition;
         private Quaternion originalRotation;
-
-        protected override void OnStart()
-        {
-            var health = gameObject.AddComponent<EntityHealth>();
-            health.Health = StartHealth;
-            health.FakeDeath = true;
-            health.OnDead += (sender, args) =>
-            {
-                active = false;
-                reachedPosition = false;
-                dead = true;
-                targetEnemy = null;
-
-                gameObject.SetActive(false);
-
-                AttachedEnemies.ForEach(enemy => enemy.InformStickDeath(this));
-            };
-
-            EnemySpawner.Instance.OnEnd += (sender, args) =>
-            {
-                active = false;
-                reachedPosition = false;
-                dead = false;
-                targetEnemy = null;
-
-                gameObject.SetActive(true);
-                transform.position = originalPosition;
-                transform.rotation = originalRotation;
-
-                health.Health = StartHealth;
-            };
-        }
 
         protected override void OnUpdate()
         {
@@ -60,6 +29,10 @@ namespace LD40.Towers
                 active = true;
                 targetEnemy = GetNearestEnemy();
                 targetEnemy.GetComponent<Enemy>().Reserve();
+
+                var audioSource = GetComponent<AudioSource>();
+                audioSource.clip = StartSound;
+                audioSource.Play();
             }
             else
             {
@@ -106,6 +79,35 @@ namespace LD40.Towers
         {
             originalPosition = transform.position;
             originalRotation = transform.rotation;
+            
+            var health = gameObject.AddComponent<EntityHealth>();
+            health.Health = StartHealth;
+            health.FakeDeath = true;
+            health.OnDead += (sender, args) =>
+            {
+                active = false;
+                reachedPosition = false;
+                dead = true;
+                targetEnemy = null;
+
+                gameObject.SetActive(false);
+
+                AttachedEnemies.ForEach(enemy => enemy.InformStickDeath(this));
+            };
+
+            EnemySpawner.Instance.OnEnd += (sender, args) =>
+            {
+                active = false;
+                reachedPosition = false;
+                dead = false;
+                targetEnemy = null;
+
+                gameObject.SetActive(true);
+                transform.position = originalPosition;
+                transform.rotation = originalRotation;
+
+                health.Health = StartHealth;
+            };
         }
 
         private bool CheckEnemy()

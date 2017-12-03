@@ -64,6 +64,8 @@ namespace LD40.Towers
             bullet.transform.position = ShotSpawn.position;
             bullet.transform.rotation = Head.transform.rotation;
             bullet.GetComponent<Bullet>().SetDamage(Damage);
+            
+            GetComponent<AudioSource>().Play();
         }
     }
 }

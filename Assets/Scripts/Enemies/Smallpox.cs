@@ -21,6 +21,7 @@ namespace LD40.Enemies
             infested.GetComponent<Enemy>().SetNode(currentNode);
             
             EnemySpawner.Instance.IncreaseEnemiesLeft();
+            GetComponent<AudioSource>().Play();
             
             infestedSomeone = true;
         }
@@ -45,6 +46,7 @@ namespace LD40.Enemies
             
                     EnemySpawner.Instance.IncreaseEnemiesLeft();
             
+                    GetComponent<AudioSource>().Play();
                     infestedSomeone = true;
                 }
             }

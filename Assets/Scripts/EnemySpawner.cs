@@ -16,12 +16,13 @@ namespace LD40
         public GameObject SmallpoxPrefab;
         public GameObject InfestedAntibodyPrefab;
         public GameObject InfestedMacrophagePrefab;
-
+        
         public Transform SpawnPoint;
         public Button waveButton;
         public Text waveText;
         public GameObject WarningText;
         public GameObject TowersPanel;
+        public AudioSource EnemyDeathSource;
 
         public event EventHandler<EventArgs> OnEnd;
 
@@ -35,7 +36,7 @@ namespace LD40
         private float timer;
         private readonly List<int[]> waves = new List<int[]>();
 
-        private int wave = 5;
+        private int wave = -1;
         private int enemiesLeft;
         private int spawnedEnemy;
 
@@ -173,6 +174,7 @@ namespace LD40
         public void KilledEnemy()
         {
             enemiesLeft--;
+            EnemyDeathSource.Play();
 
             if (enemiesLeft < 0) enemiesLeft = 0;
             if (enemiesLeft > 0) return;
