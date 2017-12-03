@@ -1,4 +1,6 @@
-﻿namespace LD40.Enemies
+﻿using UnityEngine;
+
+namespace LD40.Enemies
 {
     public class Smallpox : Enemy
     {
@@ -21,6 +23,31 @@
             EnemySpawner.Instance.IncreaseEnemiesLeft();
             
             infestedSomeone = true;
+        }
+
+        protected override void OnUpdate()
+        {
+            if (infestedSomeone) return;
+
+            if (pulledBy != null)
+            {
+                if (Vector3.Distance(transform.position, pulledBy.position) <= 0.34f)
+                {
+                    var position = pulledBy.transform.position;
+                    var rotation = pulledBy.transform.rotation;
+                    
+                    pulledBy.GetComponent<EntityHealth>().Sub(pulledBy.GetComponent<EntityHealth>().Health);
+                    
+                    var infested = Instantiate(EnemySpawner.Instance.InfestedMacrophagePrefab);
+                    infested.transform.position = position;
+                    infested.transform.rotation = rotation;
+                    infested.GetComponent<Enemy>().SetNode(currentNode);
+            
+                    EnemySpawner.Instance.IncreaseEnemiesLeft();
+            
+                    infestedSomeone = true;
+                }
+            }
         }
     }
 }

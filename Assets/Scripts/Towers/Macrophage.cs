@@ -7,14 +7,62 @@ namespace LD40.Towers
     {
         private const float delay = 1.5f;
 
+        public int StartHealth = 40;
+        
         private float timer = delay;
         private bool active;
         private Transform target;
         private bool eating;
         private bool hasKilledAll;
+        private bool dead;
+
+        private Vector3 originalPosition;
+        private Quaternion originalRotation;
+
+        protected override void OnStart()
+        {
+            var health = gameObject.AddComponent<EntityHealth>();
+            health.Health = StartHealth;
+            health.FakeDeath = true;
+
+            health.OnDead += (sender, args) =>
+            {
+                if (target != null)
+                {
+                    target.GetComponent<Enemy>().Free();
+                }
+             
+                dead = true;
+                target = null;
+                eating = false;
+                hasKilledAll = false;
+                active = false;
+                timer = delay;
+                
+                gameObject.SetActive(false);
+            };
+
+            EnemySpawner.Instance.OnEnd += (sender, args) =>
+            {
+                dead = false;
+                target = null;
+                eating = false;
+                hasKilledAll = false;
+                active = false;
+                timer = delay;
+                
+                gameObject.SetActive(true);
+                transform.position = originalPosition;
+                transform.rotation = originalRotation;
+
+                health.Health = StartHealth;
+            };
+        }
 
         protected override void OnUpdate()
         {
+            if (dead) return;
+            
             if (!active)
             {
                 var overlaps = Physics.OverlapSphere(transform.position, Radius);
@@ -95,6 +143,12 @@ namespace LD40.Towers
                     }
                 }
             }
+        }
+        
+        protected override void OnPlace()
+        {
+            originalPosition = transform.position;
+            originalRotation = transform.rotation;
         }
     }
 }
