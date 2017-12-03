@@ -51,6 +51,12 @@ namespace LD40
                 return;
             }
 
+            if (!hit.collider.CompareTag("Level"))
+            {
+                // TODO: Some logic here to hide the tower completley
+                return;
+            }
+
             var canPlace = Physics.OverlapSphere(hit.point, .55f, TowerPlacement.Instance.TowerMask).Length == 0;
             transform.position = hit.point;
 
