@@ -28,6 +28,8 @@ namespace LD40
             renderer = GetComponentInChildren<MeshRenderer>();
             originalColor = renderer.material.color;
 
+            Value = Mathf.FloorToInt(Price * 0.6f);
+            
             OnStart();
         }
 
