@@ -138,5 +138,13 @@ namespace LD40
                 );
             }
         }
+
+        private void OnDestroy()
+        {
+            if (circle)
+            {
+                Destroy(circle.gameObject);
+            }
+        }
     }
 }
