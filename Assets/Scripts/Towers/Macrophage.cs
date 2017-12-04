@@ -8,7 +8,7 @@ namespace LD40.Towers
         private const float delay = 1.5f;
 
         public int StartHealth = 40;
-        
+
         private float timer = delay;
         private bool active;
         private Transform target;
@@ -19,50 +19,10 @@ namespace LD40.Towers
         private Vector3 originalPosition;
         private Quaternion originalRotation;
 
-        protected override void OnStart()
-        {
-            var health = gameObject.AddComponent<EntityHealth>();
-            health.Health = StartHealth;
-            health.FakeDeath = true;
-
-            health.OnDead += (sender, args) =>
-            {
-                if (target != null)
-                {
-                    target.GetComponent<Enemy>().Free();
-                }
-             
-                dead = true;
-                target = null;
-                eating = false;
-                hasKilledAll = false;
-                active = false;
-                timer = delay;
-                
-                gameObject.SetActive(false);
-            };
-
-            EnemySpawner.Instance.OnEnd += (sender, args) =>
-            {
-                dead = false;
-                target = null;
-                eating = false;
-                hasKilledAll = false;
-                active = false;
-                timer = delay;
-                
-                gameObject.SetActive(true);
-                transform.position = originalPosition;
-                transform.rotation = originalRotation;
-
-                health.Health = StartHealth;
-            };
-        }
-
         protected override void OnUpdate()
         {
             if (dead) return;
-            
+
             if (!active)
             {
                 var overlaps = Physics.OverlapSphere(transform.position, Radius);
@@ -116,12 +76,12 @@ namespace LD40.Towers
                         hasKilledAll = false;
                         return;
                     }
-                    
+
                     if (target.GetComponent<RotationAnimation>())
                     {
                         Destroy(target.GetComponent<RotationAnimation>());
                     }
-                    
+
                     transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, delay / 2 * Time.deltaTime);
 
                     if (hasKilledAll && Vector3.Distance(transform.localScale, Vector3.one) <= 0.08f)
@@ -137,6 +97,7 @@ namespace LD40.Towers
                         if (timer > 0) return;
 
                         target.GetComponent<EntityHealth>().Sub(Damage);
+                        Killed++;
 
                         hasKilledAll = true;
                         timer = delay;
@@ -144,11 +105,60 @@ namespace LD40.Towers
                 }
             }
         }
-        
+
         protected override void OnPlace()
         {
             originalPosition = transform.position;
             originalRotation = transform.rotation;
+
+            var health = gameObject.AddComponent<EntityHealth>();
+            health.Health = StartHealth;
+            health.FakeDeath = true;
+
+            health.OnDead += (sender, args) =>
+            {
+                if (target != null)
+                {
+                    target.GetComponent<Enemy>().Free();
+                }
+
+                dead = true;
+                target = null;
+                eating = false;
+                hasKilledAll = false;
+                active = false;
+                timer = delay;
+
+                gameObject.SetActive(false);
+                
+                if (circle)
+                {
+                    Destroy(circle.gameObject);
+                }
+            };
+
+            EnemySpawner.Instance.OnEnd += (sender, args) =>
+            {
+                if (!this) return;
+                
+                dead = false;
+                target = null;
+                eating = false;
+                hasKilledAll = false;
+                active = false;
+                timer = delay;
+
+                gameObject.SetActive(true);
+                transform.position = originalPosition;
+                transform.rotation = originalRotation;
+
+                health.Health = StartHealth;
+                
+                if (DetailPanel.Instance.IsMe(this))
+                {
+                    CreateCircleIfNotExists();
+                }
+            };
         }
     }
 }

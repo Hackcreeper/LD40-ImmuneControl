@@ -12,6 +12,7 @@ namespace LD40
         public Image Image;
         public Text Killed;
         public Text Sell;
+        public Button SellButton;
         
         private Tower currentTower;
 
@@ -22,13 +23,23 @@ namespace LD40
 
         private void Update()
         {
-            if (!currentTower || !Input.GetKeyDown(KeyCode.Escape)) return;
+            if (!currentTower) return;
 
-            Close();
+            Killed.text = string.Format("Killed {0} enemies!", currentTower.Killed);
+            
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Close();
+            }
         }
 
         public void Open(Tower tower)
         {
+            if (currentTower != null)
+            {
+                Close();
+            }
+            
             currentTower = tower;
 
             Panel.gameObject.SetActive(true);
@@ -46,15 +57,33 @@ namespace LD40
 
         public void Close()
         {
+            if (currentTower == null) return;
+            
+            currentTower.OnDetailClose();
             currentTower = null;
             Panel.gameObject.SetActive(false);
         }
 
         public void SellTower()
         {
+            if (EnemySpawner.Instance.IsWaveOngoing())
+            {
+                return;
+            }
+            
             Cells.Instance.Add(currentTower.Value);
             Destroy(currentTower.gameObject);
             Close();
+        }
+
+        public void SetSellButtonState(bool activated)
+        {
+            SellButton.interactable = activated;
+        }
+
+        public bool IsMe(Tower other)
+        {
+            return currentTower == other;
         }
     }
 }

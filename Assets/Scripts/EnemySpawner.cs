@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace LD40
@@ -15,12 +16,13 @@ namespace LD40
         public GameObject SmallpoxPrefab;
         public GameObject InfestedAntibodyPrefab;
         public GameObject InfestedMacrophagePrefab;
-
+        
         public Transform SpawnPoint;
         public Button waveButton;
         public Text waveText;
         public GameObject WarningText;
         public GameObject TowersPanel;
+        public AudioSource EnemyDeathSource;
 
         public event EventHandler<EventArgs> OnEnd;
 
@@ -117,7 +119,7 @@ namespace LD40
 
             if (enemiesLeft <= 0)
             {
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.Space) && !Pause.Instance.Paused() && !Introduction.Instance.IsOpen())
                 {
                     StartWave();
                 }
@@ -172,6 +174,7 @@ namespace LD40
         public void KilledEnemy()
         {
             enemiesLeft--;
+            EnemyDeathSource.Play();
 
             if (enemiesLeft < 0) enemiesLeft = 0;
             if (enemiesLeft > 0) return;
@@ -179,9 +182,16 @@ namespace LD40
             WarningText.SetActive(false);
             TowersPanel.SetActive(true);
 
+            DetailPanel.Instance.SetSellButtonState(true);
+            
             if (OnEnd != null)
             {
                 OnEnd.Invoke(this, EventArgs.Empty);
+            }
+
+            if (wave + 1 == waves.Count)
+            {
+                SceneManager.LoadScene("Win");
             }
         }
 
@@ -190,6 +200,8 @@ namespace LD40
         {
             if (enemiesLeft > 0) return;
 
+            DetailPanel.Instance.SetSellButtonState(false);
+            
             wave++;
             enemiesLeft = waves[wave].Length;
             spawnedEnemy = 0;
@@ -206,6 +218,11 @@ namespace LD40
         public void IncreaseEnemiesLeft()
         {
             enemiesLeft++;
+        }
+
+        public bool IsWaveOngoing()
+        {
+            return enemiesLeft > 0;
         }
     }
 }

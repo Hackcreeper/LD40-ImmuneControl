@@ -5,6 +5,7 @@ namespace LD40
     public class TowerPlacement : MonoBehaviour
     {
         public GameObject CirclePrefab;
+        public AudioSource PlacingSource;
 
         public LayerMask PlaceMask;
         public LayerMask TowerMask;
@@ -39,11 +40,13 @@ namespace LD40
             }
 
             placingTower = Instantiate(prefab).GetComponent<Tower>();
+            placingTower.transform.position = new Vector3(0, -1000, 0);
         }
 
         public void Placed()
         {
             placingTower = null;
+            PlacingSource.Play();
         }
 
         public void Cancel()
@@ -51,6 +54,11 @@ namespace LD40
             if (!placingTower) return;
 
             Destroy(placingTower.gameObject);
+        }
+
+        public bool IsPlacing()
+        {
+            return placingTower != null;
         }
     }
 }

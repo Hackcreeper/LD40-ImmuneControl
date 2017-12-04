@@ -12,32 +12,39 @@ namespace LD40
         public float Radius = 2f;
         public int Damage = 5;
         public bool Sticky;
-        
+
         public List<Enemy> AttachedEnemies = new List<Enemy>();
 
         [HideInInspector] public int Killed;
 
         [HideInInspector] public int Value;
 
+        protected MeshRenderer circle;
+        
         private bool placing = true;
         private Color originalColor;
-        private MeshRenderer circle;
         private Renderer renderer;
 
         private void Start()
         {
-            renderer = GetComponentInChildren<MeshRenderer>() ?? (Renderer) GetComponentInChildren<SkinnedMeshRenderer>();
+            renderer = GetComponentInChildren<MeshRenderer>() ??
+                       (Renderer) GetComponentInChildren<SkinnedMeshRenderer>();
 
 
             originalColor = renderer.material.color;
 
             Value = Mathf.FloorToInt(Price * 0.6f);
-            
+
             OnStart();
         }
 
         private void Update()
         {
+            if (circle != null)
+            {
+                circle.transform.position = transform.position + new Vector3(0, .1f, 0);
+            }
+            
             if (!placing)
             {
                 OnUpdate();
@@ -45,24 +52,20 @@ namespace LD40
             }
 
             CreateCircleIfNotExists();
-            circle.transform.position = transform.position + new Vector3(0, .1f, 0);
 
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (!Physics.Raycast(ray, out hit, 1000, TowerPlacement.Instance.PlaceMask))
-            {
-                transform.position = new Vector3(0, -1000, 0);
-                return;
-            }
+            var canPlace = Physics.Raycast(ray, out hit, 1000, TowerPlacement.Instance.PlaceMask);
+
+            canPlace = canPlace && Physics.OverlapSphere(hit.point, .55f, TowerPlacement.Instance.TowerMask).Length ==
+                       0;
 
             if (!hit.collider.CompareTag("Level"))
             {
-                transform.position = new Vector3(0, -1000, 0);
-                return;
+                canPlace = false;
             }
 
-            var canPlace = Physics.OverlapSphere(hit.point, .55f, TowerPlacement.Instance.TowerMask).Length == 0;
             transform.position = hit.point;
 
             canPlace = canPlace && Cells.Instance.Check(Price);
@@ -74,7 +77,7 @@ namespace LD40
                 Place();
             }
         }
-        
+
         protected virtual void OnUpdate()
         {
         }
@@ -101,7 +104,18 @@ namespace LD40
         {
             if (placing) return;
 
+            CreateCircleIfNotExists();
+            SetCircleColor(new Color(0, 1, 0, 0.15f));
+
             DetailPanel.Instance.Open(this);
+        }
+
+        public void OnDetailClose()
+        {
+            if (circle != null)
+            {
+                Destroy(circle.gameObject);   
+            }
         }
 
         private void Place()
@@ -117,12 +131,13 @@ namespace LD40
             OnPlace();
         }
 
-        private void CreateCircleIfNotExists()
+        protected void CreateCircleIfNotExists()
         {
             if (circle != null) return;
 
             circle = Instantiate(TowerPlacement.Instance.CirclePrefab).GetComponent<MeshRenderer>();
-            circle.transform.localScale = new Vector3(Radius*2, 0.01f, Radius*2);
+            circle.transform.localScale = new Vector3(Radius * 2, 0.01f, Radius * 2);
+            circle.transform.position = transform.position + new Vector3(0, .1f, 0);
         }
 
         private void SetColor(Color color, float alpha, bool colorizeCircle, bool shadows)
@@ -148,6 +163,11 @@ namespace LD40
                     color.r, color.g, color.b, 0.15f
                 );
             }
+        }
+
+        private void SetCircleColor(Color color)
+        {
+            circle.material.color = color;
         }
 
         private void OnDestroy()

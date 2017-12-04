@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using LD40.Towers;
+using UnityEngine;
 
 namespace LD40
 {
@@ -6,7 +7,7 @@ namespace LD40
     {
         public float Speed = 20f;
 
-        private int Damage;
+        private Tower Spawner;
         private float timer = 5f;
 
         private void Update()
@@ -17,22 +18,25 @@ namespace LD40
 
             timer -= Time.deltaTime;
             if (timer > 0) return;
-            
+
             Destroy(gameObject);
         }
-        
+
         private void OnCollisionEnter(Collision other)
         {
             if (other.collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
             {
-                other.gameObject.GetComponent<EntityHealth>().Sub(Damage);
+                if (other.gameObject.GetComponent<EntityHealth>().Sub(Spawner.Damage))
+                {
+                    Spawner.Killed++;
+                }
                 Destroy(gameObject);
             }
         }
-        
-        public void SetDamage(int damage)
+
+        public void SetSpawner(Tower spawner)
         {
-            Damage = damage;
+            Spawner = spawner;
         }
     }
 }

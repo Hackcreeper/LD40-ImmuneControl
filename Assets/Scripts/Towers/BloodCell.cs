@@ -29,6 +29,12 @@ namespace LD40.Towers
                 return;
             }
 
+            if (enemy.GetComponent<Enemy>().IsPulled())
+            {
+                enemy = null;
+                return;
+            }
+
             var lookPos = enemy.transform.position - Head.position;
             lookPos.y = 0;
             var rotation = Quaternion.LookRotation(lookPos);
@@ -63,7 +69,9 @@ namespace LD40.Towers
             var bullet = Instantiate(BulletPrefab);
             bullet.transform.position = ShotSpawn.position;
             bullet.transform.rotation = Head.transform.rotation;
-            bullet.GetComponent<Bullet>().SetDamage(Damage);
+            bullet.GetComponent<Bullet>().SetSpawner(this);
+            
+            GetComponent<AudioSource>().Play();
         }
     }
 }
