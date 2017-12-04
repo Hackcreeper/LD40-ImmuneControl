@@ -57,6 +57,8 @@ namespace LD40
 
         public void Close()
         {
+            if (currentTower == null) return;
+            
             currentTower.OnDetailClose();
             currentTower = null;
             Panel.gameObject.SetActive(false);
