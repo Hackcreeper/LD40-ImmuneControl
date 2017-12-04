@@ -119,7 +119,7 @@ namespace LD40
 
             if (enemiesLeft <= 0)
             {
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.Space) && !Pause.Instance.Paused())
                 {
                     StartWave();
                 }

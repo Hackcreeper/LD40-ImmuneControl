@@ -55,5 +55,10 @@ namespace LD40
 
             Destroy(placingTower.gameObject);
         }
+
+        public bool IsPlacing()
+        {
+            return placingTower != null;
+        }
     }
 }
