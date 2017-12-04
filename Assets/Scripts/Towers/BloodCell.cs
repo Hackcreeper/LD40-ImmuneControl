@@ -73,5 +73,11 @@ namespace LD40.Towers
             
             GetComponent<AudioSource>().Play();
         }
+
+        protected override void OnUpgrade()
+        {
+            Delay /= 2;
+            Damage *= 2;
+        }
     }
 }

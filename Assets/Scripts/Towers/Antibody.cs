@@ -17,6 +17,7 @@ namespace LD40.Towers
         private float timer;
         private Vector3 originalPosition;
         private Quaternion originalRotation;
+        private float speed = 3f;
 
         protected override void OnUpdate()
         {
@@ -45,7 +46,7 @@ namespace LD40.Towers
                     }
 
                     transform.position =
-                        Vector3.MoveTowards(transform.position, targetEnemy.position, 3 * Time.deltaTime);
+                        Vector3.MoveTowards(transform.position, targetEnemy.position, speed * Time.deltaTime);
 
                     transform.Rotate(new Vector3(0, 0, 20f));
 
@@ -135,6 +136,14 @@ namespace LD40.Towers
         private Transform GetNearestEnemy()
         {
             return Physics.OverlapSphere(transform.position, Radius, EnemyMask)[0].transform;
+        }
+
+        protected override void OnUpgrade()
+        {
+            StartHealth *= 2;
+            GetComponent<EntityHealth>().Health = StartHealth;
+
+            speed *= 2;
         }
     }
 }

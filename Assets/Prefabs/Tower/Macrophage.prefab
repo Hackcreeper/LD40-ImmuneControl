@@ -1340,9 +1340,13 @@ MonoBehaviour:
   Radius: 1.2
   Damage: 200
   Sticky: 0
+  UpgradeName: Macrophage+
+  UpgradeDescription: Decreases digestion time
+  UpgradePrice: 40
   AttachedEnemies: []
   Killed: 0
   Value: 0
+  StartHealth: 40
 --- !u!135 &135486086287830046
 SphereCollider:
   m_ObjectHideFlags: 1

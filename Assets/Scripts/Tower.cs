@@ -13,6 +13,10 @@ namespace LD40
         public int Damage = 5;
         public bool Sticky;
 
+        public string UpgradeName;
+        public string UpgradeDescription;
+        public int UpgradePrice;
+        
         public List<Enemy> AttachedEnemies = new List<Enemy>();
 
         [HideInInspector] public int Killed;
@@ -20,6 +24,7 @@ namespace LD40
         [HideInInspector] public int Value;
 
         protected MeshRenderer circle;
+        protected bool upgraded;
         
         private bool placing = true;
         private Color originalColor;
@@ -87,6 +92,10 @@ namespace LD40
         }
 
         protected virtual void OnPlace()
+        {
+        }
+
+        protected virtual void OnUpgrade()
         {
         }
 
@@ -181,6 +190,20 @@ namespace LD40
         public bool HasAttached()
         {
             return AttachedEnemies.Count > 0;
+        }
+
+        public bool IsUpgraded()
+        {
+            return upgraded;
+        }
+
+        public void Upgrade()
+        {
+            Name = UpgradeName;
+            Value = Mathf.FloorToInt((Price + UpgradePrice) * 0.6f);
+            upgraded = true;
+
+            OnUpgrade();
         }
     }
 }

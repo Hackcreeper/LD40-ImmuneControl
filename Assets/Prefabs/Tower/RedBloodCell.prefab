@@ -414,6 +414,9 @@ MonoBehaviour:
   Radius: 6
   Damage: 11
   Sticky: 0
+  UpgradeName: White blood cell
+  UpgradeDescription: Increases damage
+  UpgradePrice: 55
   AttachedEnemies: []
   Killed: 0
   Value: 0

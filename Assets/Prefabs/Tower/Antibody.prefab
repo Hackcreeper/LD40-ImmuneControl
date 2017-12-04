@@ -257,6 +257,9 @@ MonoBehaviour:
   Radius: 1.5
   Damage: 5
   Sticky: 1
+  UpgradeName: Antibody+
+  UpgradeDescription: Increases lifetime
+  UpgradePrice: 20
   AttachedEnemies: []
   Killed: 0
   Value: 0

@@ -1,15 +1,16 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 
 namespace LD40.Towers
 {
     public class Macrophage : Tower
     {
-        private const float delay = 1.5f;
+        private float delay = 1.5f;
 
         public int StartHealth = 40;
 
-        private float timer = delay;
+        private float timer;
         private bool active;
         private Transform target;
         private bool eating;
@@ -159,6 +160,11 @@ namespace LD40.Towers
                     CreateCircleIfNotExists();
                 }
             };
+        }
+
+        protected override void OnUpgrade()
+        {
+            delay /= 2;
         }
     }
 }
