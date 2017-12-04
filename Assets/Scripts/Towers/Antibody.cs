@@ -93,6 +93,11 @@ namespace LD40.Towers
                 gameObject.SetActive(false);
 
                 AttachedEnemies.ForEach(enemy => enemy.InformStickDeath(this));
+
+                if (circle)
+                {
+                    Destroy(circle.gameObject);
+                }
             };
 
             EnemySpawner.Instance.OnEnd += (sender, args) =>
@@ -112,6 +117,11 @@ namespace LD40.Towers
                 transform.rotation = originalRotation;
 
                 health.Health = StartHealth;
+
+                if (DetailPanel.Instance.IsMe(this))
+                {
+                    CreateCircleIfNotExists();
+                }
             };
         }
 

@@ -35,6 +35,11 @@ namespace LD40
 
         public void Open(Tower tower)
         {
+            if (currentTower != null)
+            {
+                Close();
+            }
+            
             currentTower = tower;
 
             Panel.gameObject.SetActive(true);
@@ -52,6 +57,7 @@ namespace LD40
 
         public void Close()
         {
+            currentTower.OnDetailClose();
             currentTower = null;
             Panel.gameObject.SetActive(false);
         }
@@ -71,6 +77,11 @@ namespace LD40
         public void SetSellButtonState(bool activated)
         {
             SellButton.interactable = activated;
+        }
+
+        public bool IsMe(Tower other)
+        {
+            return currentTower == other;
         }
     }
 }

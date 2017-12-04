@@ -130,6 +130,11 @@ namespace LD40.Towers
                 timer = delay;
 
                 gameObject.SetActive(false);
+                
+                if (circle)
+                {
+                    Destroy(circle.gameObject);
+                }
             };
 
             EnemySpawner.Instance.OnEnd += (sender, args) =>
@@ -148,6 +153,11 @@ namespace LD40.Towers
                 transform.rotation = originalRotation;
 
                 health.Health = StartHealth;
+                
+                if (DetailPanel.Instance.IsMe(this))
+                {
+                    CreateCircleIfNotExists();
+                }
             };
         }
     }
