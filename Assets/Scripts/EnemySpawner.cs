@@ -107,16 +107,6 @@ namespace LD40
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                Time.timeScale /= 2;
-            }
-
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                Time.timeScale *= 2;
-            }
-
             if (enemiesLeft <= 0)
             {
                 if (Input.GetKeyDown(KeyCode.Space) && !Pause.Instance.Paused() && !Introduction.Instance.IsOpen())
