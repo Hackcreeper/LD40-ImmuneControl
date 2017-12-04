@@ -25,12 +25,12 @@ namespace LD40
         {
             if (!currentTower) return;
 
+            Killed.text = string.Format("Killed {0} enemies!", currentTower.Killed);
+            
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Close();
             }
-            
-            Killed.text = string.Format("Killed {0} enemies!", currentTower.Killed);
         }
 
         public void Open(Tower tower)

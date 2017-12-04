@@ -56,19 +56,16 @@ namespace LD40
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (!Physics.Raycast(ray, out hit, 1000, TowerPlacement.Instance.PlaceMask))
-            {
-                transform.position = new Vector3(0, -1000, 0);
-                return;
-            }
+            var canPlace = Physics.Raycast(ray, out hit, 1000, TowerPlacement.Instance.PlaceMask);
+
+            canPlace = canPlace && Physics.OverlapSphere(hit.point, .55f, TowerPlacement.Instance.TowerMask).Length ==
+                       0;
 
             if (!hit.collider.CompareTag("Level"))
             {
-                transform.position = new Vector3(0, -1000, 0);
-                return;
+                canPlace = false;
             }
 
-            var canPlace = Physics.OverlapSphere(hit.point, .55f, TowerPlacement.Instance.TowerMask).Length == 0;
             transform.position = hit.point;
 
             canPlace = canPlace && Cells.Instance.Check(Price);
@@ -140,6 +137,7 @@ namespace LD40
 
             circle = Instantiate(TowerPlacement.Instance.CirclePrefab).GetComponent<MeshRenderer>();
             circle.transform.localScale = new Vector3(Radius * 2, 0.01f, Radius * 2);
+            circle.transform.position = transform.position + new Vector3(0, .1f, 0);
         }
 
         private void SetColor(Color color, float alpha, bool colorizeCircle, bool shadows)

@@ -40,6 +40,7 @@ namespace LD40
             }
 
             placingTower = Instantiate(prefab).GetComponent<Tower>();
+            placingTower.transform.position = new Vector3(0, -1000, 0);
         }
 
         public void Placed()
