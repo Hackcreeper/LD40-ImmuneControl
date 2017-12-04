@@ -36,6 +36,11 @@ namespace LD40
 
         private void Update()
         {
+            if (pulledBy && pulledBy.GetComponent<EntityHealth>().Health <= 0)
+            {
+                pulledBy = null;
+            }
+            
             OnUpdate();
             
             if (pulledBy != null)
@@ -64,6 +69,7 @@ namespace LD40
             if (!targetPosition.HasValue)
             {
                 Health.Instance.Sub(1 * Damage);
+                Notification.Instance.ShowRandomDisease();
                 EnemySpawner.Instance.KilledEnemy();
                 Destroy(gameObject);
 

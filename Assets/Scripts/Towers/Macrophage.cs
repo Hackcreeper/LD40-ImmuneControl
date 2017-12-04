@@ -56,6 +56,8 @@ namespace LD40.Towers
 
                     if (target.GetComponent<EntityHealth>().Health <= 0)
                     {
+                        target.GetComponent<Enemy>().Free();
+                        
                         active = false;
                         return;
                     }
@@ -85,7 +87,7 @@ namespace LD40.Towers
 
                     transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one, delay / 2 * Time.deltaTime);
 
-                    if (hasKilledAll && Vector3.Distance(transform.localScale, Vector3.one) <= 0.08f)
+                    if (hasKilledAll && Vector3.Distance(transform.localScale, Vector3.one) <= 0.12f)
                     {
                         eating = false;
                         target = null;
@@ -97,7 +99,7 @@ namespace LD40.Towers
                         timer -= Time.deltaTime;
                         if (timer > 0) return;
 
-                        target.GetComponent<EntityHealth>().Sub(Damage);
+                        target.GetComponent<EntityHealth>().Sub(9999999);
                         Killed++;
 
                         hasKilledAll = true;
@@ -118,11 +120,11 @@ namespace LD40.Towers
 
             health.OnDead += (sender, args) =>
             {
-                if (target != null)
+                if (target)
                 {
                     target.GetComponent<Enemy>().Free();
                 }
-
+             
                 dead = true;
                 target = null;
                 eating = false;

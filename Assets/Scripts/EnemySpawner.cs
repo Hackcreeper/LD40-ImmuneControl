@@ -166,7 +166,7 @@ namespace LD40
         {
             enemiesLeft--;
             EnemyDeathSource.Play();
-
+            
             if (enemiesLeft < 0) enemiesLeft = 0;
             if (enemiesLeft > 0) return;
 

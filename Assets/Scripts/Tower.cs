@@ -77,9 +77,19 @@ namespace LD40
 
             SetColor(canPlace ? Color.green : Color.red, 0.5f, true, false);
 
-            if (canPlace && Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0))
             {
-                Place();
+                if (canPlace)
+                {
+                    Place();
+                }
+                else
+                {
+                    if (!Cells.Instance.Check(Price))
+                    {
+                        Notification.Instance.ShowWarning("Not enough cells!");
+                    }
+                }
             }
         }
 

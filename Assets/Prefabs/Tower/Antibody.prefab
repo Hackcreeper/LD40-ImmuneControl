@@ -253,13 +253,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Antibody
   Image: {fileID: 21300000, guid: 43c7324dfb0934dd0ba460d748bdcc44, type: 3}
-  Price: 8
+  Price: 6
   Radius: 1.5
   Damage: 5
   Sticky: 1
   UpgradeName: Antibody+
   UpgradeDescription: Increases lifetime
-  UpgradePrice: 20
+  UpgradePrice: 15
   AttachedEnemies: []
   Killed: 0
   Value: 0
