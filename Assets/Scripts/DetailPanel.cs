@@ -13,6 +13,10 @@ namespace LD40
         public Text Killed;
         public Text Sell;
         public Button SellButton;
+        public Text UpgradeName;
+        public Text UpgradeDescription;
+        public Text Upgrade;
+        public Button UpgradeButton;
         
         private Tower currentTower;
 
@@ -48,6 +52,20 @@ namespace LD40
             Image.sprite = tower.Image;
             Killed.text = string.Format("Killed {0} enemies!", tower.Killed);
             Sell.text = string.Format("Sell for {0}", tower.Value);
+
+            if (!tower.IsUpgraded())
+            {
+                UpgradeButton.gameObject.SetActive(true);
+                UpgradeName.text = tower.UpgradeName;
+                UpgradeDescription.text = tower.UpgradeDescription;
+                Upgrade.text = string.Format("Upgrade for {0}", tower.UpgradePrice);                
+            }
+            else
+            {
+                UpgradeButton.gameObject.SetActive(false);
+                UpgradeName.text = "Fully upgraded";
+                UpgradeDescription.text = "";                
+            }
         }
 
         public bool IsOpen()
@@ -79,11 +97,31 @@ namespace LD40
         public void SetSellButtonState(bool activated)
         {
             SellButton.interactable = activated;
+            UpgradeButton.interactable = activated;
         }
 
         public bool IsMe(Tower other)
         {
             return currentTower == other;
+        }
+
+        public void UpgradeTower()
+        {
+            if (EnemySpawner.Instance.IsWaveOngoing()) return;
+            if (currentTower.IsUpgraded()) return;
+
+            if (!Cells.Instance.Check(currentTower.UpgradePrice)) return;
+            
+            Cells.Instance.Sub(currentTower.UpgradePrice);
+            currentTower.Upgrade();
+                
+            Title.text = currentTower.Name;
+            Image.sprite = currentTower.Image;
+            Sell.text = string.Format("Sell for {0}", currentTower.Value);
+            
+            UpgradeButton.gameObject.SetActive(false);
+            UpgradeName.text = "Fully upgraded";
+            UpgradeDescription.text = "";
         }
     }
 }

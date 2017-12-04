@@ -39,6 +39,7 @@ namespace LD40
         private int wave = -1;
         private int enemiesLeft;
         private int spawnedEnemy;
+        private float delay = 1f;
 
         private void Awake()
         {
@@ -107,16 +108,6 @@ namespace LD40
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                Time.timeScale /= 2;
-            }
-
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                Time.timeScale *= 2;
-            }
-
             if (enemiesLeft <= 0)
             {
                 if (Input.GetKeyDown(KeyCode.Space) && !Pause.Instance.Paused() && !Introduction.Instance.IsOpen())
@@ -133,7 +124,7 @@ namespace LD40
             timer -= Time.deltaTime;
             if (timer > 0) return;
 
-            timer = 1f;
+            timer = delay;
 
             if (spawnedEnemy >= waves[wave].Length) return;
 
@@ -201,7 +192,8 @@ namespace LD40
             if (enemiesLeft > 0) return;
 
             DetailPanel.Instance.SetSellButtonState(false);
-            
+
+            delay = Mathf.Max(0.25f, delay - 0.2f);
             wave++;
             enemiesLeft = waves[wave].Length;
             spawnedEnemy = 0;

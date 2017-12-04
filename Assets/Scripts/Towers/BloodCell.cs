@@ -38,7 +38,7 @@ namespace LD40.Towers
             var lookPos = enemy.transform.position - Head.position;
             lookPos.y = 0;
             var rotation = Quaternion.LookRotation(lookPos);
-            rotation = Quaternion.Euler(-90, rotation.eulerAngles.y, rotation.eulerAngles.z + 90);
+            rotation = Quaternion.Euler(rotation.eulerAngles.x, rotation.eulerAngles.y + 90, rotation.eulerAngles.z);
             Head.rotation = Quaternion.Slerp(Head.rotation, rotation, Time.deltaTime * 20f);
 
             timer -= Time.deltaTime;
@@ -72,6 +72,12 @@ namespace LD40.Towers
             bullet.GetComponent<Bullet>().SetSpawner(this);
             
             GetComponent<AudioSource>().Play();
+        }
+
+        protected override void OnUpgrade()
+        {
+            Delay /= 2;
+            Damage *= 2;
         }
     }
 }
