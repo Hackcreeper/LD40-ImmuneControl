@@ -22,16 +22,20 @@ namespace LD40.Enemies
         {
             if (SplitPrefab)
             {
-                // x - 1
-                // x + 1
+                var ax = Random.Range(-1f, 1f);
+                var az = Random.Range(-1f, 1f);
+                
                 var a = Instantiate(SplitPrefab);
-                a.transform.position = transform.position + new Vector3(1, 0, 0);
+                a.transform.position = transform.position + new Vector3(ax, 0, az);
                 a.transform.rotation = transform.rotation;
                 a.GetComponent<Enemy>().SetNode(currentNode);
                 EnemySpawner.Instance.IncreaseEnemiesLeft();
                 
+                var bx = Random.Range(-1f, 1f);
+                var bz = Random.Range(-1f, 1f);
+                
                 var b = Instantiate(SplitPrefab);
-                b.transform.position = transform.position - new Vector3(1, 0, 0);
+                b.transform.position = transform.position - new Vector3(ax, 0, az);
                 b.transform.rotation = transform.rotation;
                 b.GetComponent<Enemy>().SetNode(currentNode);
                 EnemySpawner.Instance.IncreaseEnemiesLeft();

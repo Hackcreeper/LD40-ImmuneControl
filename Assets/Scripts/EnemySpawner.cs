@@ -54,8 +54,6 @@ namespace LD40
             // WAVE 1
             waves.Add(new[]
             {
-                EnemyPurpleWorm,
-
                 EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus,
                 EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus
             });
@@ -109,6 +107,56 @@ namespace LD40
                 EnemySmallpox, EnemyPurpleVirus, EnemySmallpox, EnemyPurpleVirus, EnemySmallpox, EnemyBlueVirus,
                 EnemyGreenVirus, EnemyPurpleVirus, EnemySmallpox, EnemySmallpox, EnemySmallpox, EnemyPurpleVirus,
                 EnemyBlueVirus, EnemyPurpleVirus, EnemySmallpox, EnemyGreenVirus
+            });
+
+            // WAVE 8
+            waves.Add(new[]
+            {
+                EnemyGreenWorm, EnemyGreenWorm, EnemySmallpox, EnemyGreenWorm, EnemyGreenWorm, EnemyGreenWorm,
+                EnemyGreenWorm, EnemyGreenWorm, EnemyGreenWorm, EnemySmallpox, EnemyGreenWorm, EnemyGreenWorm,
+                EnemySmallpox, EnemyGreenWorm, EnemyGreenWorm, EnemyGreenWorm, EnemyGreenWorm, EnemyGreenWorm,
+                EnemyGreenWorm, EnemyGreenWorm, EnemyGreenWorm, EnemyPurpleVirus, EnemyPurpleVirus, EnemyPurpleVirus
+            });
+
+            // WAVE 9
+            waves.Add(new[]
+            {
+                EnemyGreenWorm, EnemyGreenWorm, EnemySmallpox, EnemyBlueWorm, EnemyGreenWorm, EnemyGreenWorm,
+                EnemyBlueWorm, EnemyGreenWorm, EnemyGreenWorm, EnemySmallpox, EnemyBlueWorm, EnemyGreenWorm,
+                EnemySmallpox, EnemyGreenWorm, EnemyBlueWorm, EnemyGreenWorm, EnemyGreenWorm, EnemyBlueWorm,
+                EnemyGreenWorm, EnemyGreenWorm, EnemyBlueWorm, EnemyPurpleVirus, EnemyPurpleVirus, EnemyPurpleWorm,
+                EnemySmallpox, EnemySmallpox, EnemySmallpox
+            });
+
+            // WAVE 10
+            waves.Add(new[]
+            {
+                EnemySmallpox, EnemySmallpox, EnemySmallpox, EnemySmallpox, EnemyBlueWorm, EnemyPurpleVirus,
+                EnemyBlueWorm, EnemyBlueWorm, EnemyBlueWorm, EnemyBlueWorm, EnemyPurpleWorm, EnemyBlueWorm,
+                EnemyBlueWorm, EnemySmallpox, EnemySmallpox, EnemySmallpox, EnemyPurpleVirus, EnemyBlueWorm,
+                EnemyBlueWorm, EnemyBlueWorm, EnemyBlueWorm, EnemyBlueWorm, EnemyPurpleWorm
+            });
+
+            // WAVE 11
+            waves.Add(new[]
+            {
+                EnemyGreenWorm, EnemyGreenVirus, EnemyGreenWorm, EnemyGreenVirus, EnemyGreenWorm, EnemyGreenVirus,
+                EnemyGreenWorm, EnemyGreenVirus, EnemyGreenWorm, EnemyGreenVirus, EnemyGreenWorm, EnemyGreenVirus,
+                EnemyGreenWorm, EnemyGreenVirus, EnemyGreenWorm, EnemyGreenVirus, EnemyGreenWorm, EnemyGreenVirus,
+                EnemyGreenWorm, EnemyGreenVirus, EnemyGreenWorm, EnemyGreenVirus, EnemyGreenWorm, EnemyGreenVirus,
+            });
+
+            // WAVE 12
+            waves.Add(new[]
+            {
+                EnemyPurpleWorm, EnemySmallpox, EnemySmallpox, EnemyPurpleWorm, EnemyPurpleWorm, EnemyPurpleWorm,
+                EnemyPurpleWorm, EnemyPurpleWorm, EnemyPurpleWorm, EnemyPurpleWorm, EnemyPurpleWorm, EnemyPurpleWorm,
+                EnemyPurpleWorm, EnemyPurpleWorm, EnemyPurpleWorm, EnemyPurpleWorm, EnemyPurpleWorm, EnemyPurpleWorm,
+                EnemySmallpox, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus,
+                EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus,
+                EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyPurpleVirus,
+                EnemyPurpleVirus, EnemyPurpleVirus, EnemyPurpleVirus, EnemyPurpleVirus, EnemyPurpleVirus, EnemySmallpox,
+                EnemyPurpleWorm
             });
 
             waveText.text = string.Format("Wave 0 / {0}", waves.Count);
@@ -167,10 +215,10 @@ namespace LD40
 
                 case EnemyGreenWorm:
                     return GreenWormPrefab;
-                    
+
                 case EnemyBlueWorm:
                     return BlueWormPrefab;
-                    
+
                 case EnemyPurpleWorm:
                     return PurpleWormPrefab;
 
