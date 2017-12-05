@@ -2646,48 +2646,6 @@ Transform:
   m_Father: {fileID: 497512899}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &708230729
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4114086728499466, guid: 94abbfd8fa16542dba6c8b13fdbe771e, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -1.3863964
-      objectReference: {fileID: 0}
-    - target: {fileID: 4114086728499466, guid: 94abbfd8fa16542dba6c8b13fdbe771e, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -0.7885035
-      objectReference: {fileID: 0}
-    - target: {fileID: 4114086728499466, guid: 94abbfd8fa16542dba6c8b13fdbe771e, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: -0.59937054
-      objectReference: {fileID: 0}
-    - target: {fileID: 4114086728499466, guid: 94abbfd8fa16542dba6c8b13fdbe771e, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4114086728499466, guid: 94abbfd8fa16542dba6c8b13fdbe771e, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4114086728499466, guid: 94abbfd8fa16542dba6c8b13fdbe771e, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4114086728499466, guid: 94abbfd8fa16542dba6c8b13fdbe771e, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4114086728499466, guid: 94abbfd8fa16542dba6c8b13fdbe771e, type: 2}
-      propertyPath: m_RootOrder
-      value: 9
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 94abbfd8fa16542dba6c8b13fdbe771e, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &727752103
 GameObject:
   m_ObjectHideFlags: 0
@@ -6486,6 +6444,12 @@ MonoBehaviour:
   InfestedAntibodyPrefab: {fileID: 1717939681860020, guid: c64b1a743ae934d1893b0c9b61b8e37c,
     type: 2}
   InfestedMacrophagePrefab: {fileID: 1898166925066052, guid: 5af63c856f8d8414bae26072eb309326,
+    type: 2}
+  GreenWormPrefab: {fileID: 1795591586419870, guid: 16f79f78914384ce88b376ad111d4c2a,
+    type: 2}
+  BlueWormPrefab: {fileID: 1884065525742242, guid: c1f75fefc3a4c4cd996c2a89155ac950,
+    type: 2}
+  PurpleWormPrefab: {fileID: 1736253062810880, guid: 79ee81cd3f3be4d2e9a28baee3f3a57f,
     type: 2}
   SpawnPoint: {fileID: 883529470}
   waveButton: {fileID: 1152778804}

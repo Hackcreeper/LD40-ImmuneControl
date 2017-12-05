@@ -16,7 +16,10 @@ namespace LD40
         public GameObject SmallpoxPrefab;
         public GameObject InfestedAntibodyPrefab;
         public GameObject InfestedMacrophagePrefab;
-        
+        public GameObject GreenWormPrefab;
+        public GameObject BlueWormPrefab;
+        public GameObject PurpleWormPrefab;
+
         public Transform SpawnPoint;
         public Button waveButton;
         public Text waveText;
@@ -32,6 +35,9 @@ namespace LD40
         private const int EnemySmallpox = 4;
         private const int EnemyInfestedAntibody = 5;
         private const int EnemyInfestedMacrophage = 6;
+        private const int EnemyGreenWorm = 7;
+        private const int EnemyBlueWorm = 8;
+        private const int EnemyPurpleWorm = 9;
 
         private float timer;
         private readonly List<int[]> waves = new List<int[]>();
@@ -48,6 +54,8 @@ namespace LD40
             // WAVE 1
             waves.Add(new[]
             {
+                EnemyPurpleWorm,
+
                 EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus,
                 EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus, EnemyGreenVirus
             });
@@ -93,13 +101,13 @@ namespace LD40
                 EnemySmallpox, EnemyPurpleVirus, EnemyPurpleVirus, EnemyPurpleVirus, EnemySmallpox, EnemyPurpleVirus,
                 EnemyPurpleVirus, EnemyPurpleVirus, EnemySmallpox
             });
-            
+
             // WAVE 7
             waves.Add(new[]
             {
                 EnemySmallpox, EnemySmallpox, EnemyPurpleVirus, EnemyPurpleVirus, EnemyBlueVirus, EnemySmallpox,
                 EnemySmallpox, EnemyPurpleVirus, EnemySmallpox, EnemyPurpleVirus, EnemySmallpox, EnemyBlueVirus,
-                EnemyGreenVirus, EnemyPurpleVirus, EnemySmallpox, EnemySmallpox, EnemySmallpox, EnemyPurpleVirus, 
+                EnemyGreenVirus, EnemyPurpleVirus, EnemySmallpox, EnemySmallpox, EnemySmallpox, EnemyPurpleVirus,
                 EnemyBlueVirus, EnemyPurpleVirus, EnemySmallpox, EnemyGreenVirus
             });
 
@@ -157,6 +165,15 @@ namespace LD40
                 case EnemyInfestedMacrophage:
                     return InfestedMacrophagePrefab;
 
+                case EnemyGreenWorm:
+                    return GreenWormPrefab;
+                    
+                case EnemyBlueWorm:
+                    return BlueWormPrefab;
+                    
+                case EnemyPurpleWorm:
+                    return PurpleWormPrefab;
+
                 default:
                     return null;
             }
@@ -166,7 +183,7 @@ namespace LD40
         {
             enemiesLeft--;
             EnemyDeathSource.Play();
-            
+
             if (enemiesLeft < 0) enemiesLeft = 0;
             if (enemiesLeft > 0) return;
 
@@ -174,7 +191,7 @@ namespace LD40
             TowersPanel.SetActive(true);
 
             DetailPanel.Instance.SetSellButtonState(true);
-            
+
             if (OnEnd != null)
             {
                 OnEnd.Invoke(this, EventArgs.Empty);

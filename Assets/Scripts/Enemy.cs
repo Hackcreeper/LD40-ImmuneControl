@@ -13,8 +13,8 @@ namespace LD40
         
         protected int currentNode;
         protected Transform pulledBy;
+        protected Vector3? targetPosition;
         
-        private Vector3? targetPosition;
         private readonly List<Tower> stickyTargets = new List<Tower>();
         private float timer;
         
@@ -32,9 +32,13 @@ namespace LD40
                 {
                     stickyTargets.ForEach(target => target.InformDeath(this));
                 }
+
+                OnDeath();
             };
         }
 
+        protected virtual void OnDeath() {}
+        
         private void Update()
         {
             if (pulledBy)
