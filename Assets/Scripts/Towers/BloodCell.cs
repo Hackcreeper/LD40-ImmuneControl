@@ -11,6 +11,14 @@ namespace LD40.Towers
         public Transform ShotSpawn;
         public GameObject BulletPrefab;
 
+        public Material UpgradeTopMaterial;
+        public Material UpgradeBodyMaterial;
+        public Material UpgradeShootMaterial;
+        public Material UpgradeBulletMaterial;
+
+        public Transform HeadShot;
+        public Transform Body;
+
         private Collider enemy;
         private float timer;
 
@@ -70,6 +78,11 @@ namespace LD40.Towers
             bullet.transform.position = ShotSpawn.position;
             bullet.transform.rotation = Head.transform.rotation;
             bullet.GetComponent<Bullet>().SetSpawner(this);
+
+            if (IsUpgraded())
+            {
+                bullet.GetComponentInChildren<MeshRenderer>().material = UpgradeBulletMaterial;
+            }
             
             GetComponent<AudioSource>().Play();
         }
@@ -78,6 +91,10 @@ namespace LD40.Towers
         {
             Delay /= 2;
             Damage *= 2;
+
+            Body.GetComponent<MeshRenderer>().material = UpgradeBodyMaterial;
+            Head.GetComponent<MeshRenderer>().material = UpgradeTopMaterial;
+            HeadShot.GetComponent<MeshRenderer>().material = UpgradeShootMaterial;
         }
     }
 }

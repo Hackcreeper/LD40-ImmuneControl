@@ -425,3 +425,11 @@ MonoBehaviour:
   ShotSpawn: {fileID: 4401851086895252}
   BulletPrefab: {fileID: 1868872179378884, guid: 975327a3fcb4441fa8b18fca1b3bc151,
     type: 2}
+  UpgradeTopMaterial: {fileID: 2100000, guid: e6a5b203d69338e44a226344a1c433ec, type: 2}
+  UpgradeBodyMaterial: {fileID: 2100000, guid: df39ae5053f74c740bec2c6b59202e59, type: 2}
+  UpgradeShootMaterial: {fileID: 2100000, guid: 448b987f224506442a6b985827bbc122,
+    type: 2}
+  UpgradeBulletMaterial: {fileID: 2100000, guid: eee1c18b7d52d3e4487f21f6a084a99d,
+    type: 2}
+  HeadShot: {fileID: 4972782828647224}
+  Body: {fileID: 4934859389530766}

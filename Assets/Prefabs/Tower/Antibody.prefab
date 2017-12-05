@@ -268,3 +268,4 @@ MonoBehaviour:
     m_Bits: 2048
   StartHealth: 20
   StartSound: {fileID: 8300000, guid: 2de6a46ed6f0749198022f3c469b6bf8, type: 3}
+  UpgradedMaterial: {fileID: 2100000, guid: ebe5c10221ad2cb4db8ef820e274cf9e, type: 2}

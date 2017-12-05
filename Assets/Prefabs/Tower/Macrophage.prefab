@@ -1347,6 +1347,7 @@ MonoBehaviour:
   Killed: 0
   Value: 0
   StartHealth: 40
+  UpgradedMaterial: {fileID: 2100000, guid: b126a6f582c542748b1094124ba7ebca, type: 2}
 --- !u!135 &135486086287830046
 SphereCollider:
   m_ObjectHideFlags: 1

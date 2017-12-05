@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 namespace LD40.Towers
@@ -9,9 +8,10 @@ namespace LD40.Towers
         private float delay = 1.5f;
 
         public int StartHealth = 40;
+        public Material UpgradedMaterial;
 
         private float timer;
-        private bool active;
+        public bool active;
         private Transform target;
         private bool eating;
         private bool hasKilledAll;
@@ -167,6 +167,8 @@ namespace LD40.Towers
         protected override void OnUpgrade()
         {
             delay /= 2;
+
+            GetComponentInChildren<SkinnedMeshRenderer>().material = UpgradedMaterial;
         }
     }
 }

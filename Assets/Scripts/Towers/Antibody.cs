@@ -8,6 +8,7 @@ namespace LD40.Towers
         public LayerMask EnemyMask;
         public int StartHealth = 20;
         public AudioClip StartSound;
+        public Material UpgradedMaterial;
 
         private bool active;
         private bool reachedPosition;
@@ -142,6 +143,7 @@ namespace LD40.Towers
         {
             StartHealth *= 2;
             GetComponent<EntityHealth>().Health = StartHealth;
+            GetComponentInChildren<MeshRenderer>().material = UpgradedMaterial;
 
             speed *= 2;
         }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using LD40.Towers;
 using UnityEngine;
 
 namespace LD40
@@ -36,8 +37,9 @@ namespace LD40
 
         private void Update()
         {
-            if (pulledBy && pulledBy.GetComponent<EntityHealth>().Health <= 0)
+            if (pulledBy)
             {
+                if (pulledBy.GetComponent<EntityHealth>().Health <= 0 || !pulledBy.GetComponent<Macrophage>().active)
                 pulledBy = null;
             }
             
